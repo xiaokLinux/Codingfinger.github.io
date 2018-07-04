@@ -303,16 +303,14 @@
       
         
           
-            <h5 id="内存超配比、启动失败"><a href="#内存超配比、启动失败" class="headerlink" title="内存超配比、启动失败"></a>内存超配比、启动失败</h5><h6 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h6><p>时间：2018年07月04日13:58:41</p>
-<p>事件：计算节点有三台虚拟机，其中一台挂掉。重启时失败，提示内存不足。但是请求资源是在超配比范围内的</p>
-<p>详细描述：free查看物理机220G内存，还有87G free，内存超配比为2.0。启动失败的虚拟机要求的内存是96G。按照openstack的过滤器，220*2 - （220-87）&gt; 96。是不应该出现内存不足才对</p>
-<h6 id="TroubleShoot"><a href="#TroubleShoot" class="headerlink" title="TroubleShoot"></a>TroubleShoot</h6><ol>
+            <h4 id="内存超配比、启动失败"><a href="#内存超配比、启动失败" class="headerlink" title="内存超配比、启动失败"></a>内存超配比、启动失败</h4><h5 id="概要"><a href="#概要" class="headerlink" title="概要"></a>概要</h5><p>时间：2018年07月04日13:58:41<br>事件：计算节点有三台虚拟机，其中一台挂掉。重启时失败，提示内存不足。但是请求资源是在超配比范围内的<br>详细描述：free查看物理机220G内存，还有87G free，内存超配比为2.0。启动失败的虚拟机要求的内存是96G。按照openstack的过滤器，220*2 - （220-87）&gt; 96。是不应该出现内存不足才对</p>
+<h5 id="TroubleShoot"><a href="#TroubleShoot" class="headerlink" title="TroubleShoot"></a>TroubleShoot</h5><ol>
 <li>查看nova-compute日志，发现已经生成xml了，xml中配额是96G。用这个xml去启虚拟机出错，报错是libvirt</li>
 <li>尝试去找libvirt日志，发现没有开。去message下查找libvirt的日志。发现是因为物理机内存限制</li>
 <li>在物理机查看交换分区大小，发现交换分区才4G。远小于96-87的差额。</li>
 <li>完成TroubleShoot</li>
 </ol>
-<h6 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h6><ol>
+<h5 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h5><ol>
 <li>内存超配比对于差额的容忍度是与交换分区大小有关的</li>
 <li>重启虚拟机是不走调度的（我也不知道我为啥一想到超配比就去查scheduler日志）</li>
 <li>虚拟机在超配比的限制下全部运行时不一定会顺风顺水，当虚拟机实际使用内存总和大于物理机内存+物理机虚拟内存时就会翻车</li>
