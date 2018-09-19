@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="目录结构 相关命令集合 命令用途 常用命令参数 使用例子  相关命令集合见官网，截取相关命令如下：   nova dns-createnova dns-create-private-domainnova dns-create-public-domainnova dns-deletenova dns-delete-domainnova dns-domainsnova dns-list命令用途废弃，这">
+<meta name="description" content="目录结构 相关命令集合 命令用途 常用命令参数 使用例子  相关命令集合见官网，截取相关命令如下： nova add-secgroupnova list-secgroupnova remove-secgroup#####  命令用途nova add-secgroup:为指定虚拟机添加一个指定安全组nova list-secgroup:列出指定虚拟机的所有安全组nova remove-secgrou">
 <meta property="og:type" content="article">
-<meta property="og:title" content="nova dns">
-<meta property="og:url" content="http://yoursite.com/2018/09/19/nova-dns/index.html">
+<meta property="og:title" content="nova secgroup">
+<meta property="og:url" content="http://yoursite.com/2018/09/19/nova-secgroup/index.html">
 <meta property="og:site_name" content="Codingfinger">
-<meta property="og:description" content="目录结构 相关命令集合 命令用途 常用命令参数 使用例子  相关命令集合见官网，截取相关命令如下：   nova dns-createnova dns-create-private-domainnova dns-create-public-domainnova dns-deletenova dns-delete-domainnova dns-domainsnova dns-list命令用途废弃，这">
+<meta property="og:description" content="目录结构 相关命令集合 命令用途 常用命令参数 使用例子  相关命令集合见官网，截取相关命令如下： nova add-secgroupnova list-secgroupnova remove-secgroup#####  命令用途nova add-secgroup:为指定虚拟机添加一个指定安全组nova list-secgroup:列出指定虚拟机的所有安全组nova remove-secgrou">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-19T08:58:21.000Z">
+<meta property="og:updated_time" content="2018-09-19T09:37:50.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="nova dns">
-<meta name="twitter:description" content="目录结构 相关命令集合 命令用途 常用命令参数 使用例子  相关命令集合见官网，截取相关命令如下：   nova dns-createnova dns-create-private-domainnova dns-create-public-domainnova dns-deletenova dns-delete-domainnova dns-domainsnova dns-list命令用途废弃，这">
+<meta name="twitter:title" content="nova secgroup">
+<meta name="twitter:description" content="目录结构 相关命令集合 命令用途 常用命令参数 使用例子  相关命令集合见官网，截取相关命令如下： nova add-secgroupnova list-secgroupnova remove-secgroup#####  命令用途nova add-secgroup:为指定虚拟机添加一个指定安全组nova list-secgroup:列出指定虚拟机的所有安全组nova remove-secgrou">
 
 
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/09/19/nova-dns/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/09/19/nova-secgroup/"/>
 
 
 
 
 
-  <title>nova dns | Codingfinger</title>
+  <title>nova secgroup | Codingfinger</title>
   
 
 
@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/19/nova-dns/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/19/nova-secgroup/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="xiao_k77">
@@ -249,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">nova dns</h1>
+          <h1 class="post-title" itemprop="name headline">nova secgroup</h1>
         
 
         <div class="post-meta">
@@ -261,7 +261,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T16:39:26+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T17:30:33+08:00">
                 2018-09-19
               </time>
             
@@ -305,9 +305,12 @@
 <li>常用命令参数</li>
 <li>使用例子</li>
 </ul>
-<h3 id="相关命令集合"><a href="#相关命令集合" class="headerlink" title="相关命令集合"></a>相关命令集合</h3><p>见<a href="https://docs.openstack.org/mitaka/cli-reference/nova.html#nova dns-create" target="_blank" rel="noopener">官网</a>，截取相关命令如下：  </p>
-<h5 id="nova-dns-create"><a href="#nova-dns-create" class="headerlink" title="nova dns-create"></a><a href="https://docs.openstack.org/mitaka/cli-reference/nova.html#nova-dns-create" target="_blank" rel="noopener">nova dns-create</a></h5><h5 id="nova-dns-create-private-domain"><a href="#nova-dns-create-private-domain" class="headerlink" title="nova dns-create-private-domain"></a><a href="https://docs.openstack.org/mitaka/cli-reference/nova.html#nova-dns-create-private-domain" target="_blank" rel="noopener">nova dns-create-private-domain</a></h5><h5 id="nova-dns-create-public-domain"><a href="#nova-dns-create-public-domain" class="headerlink" title="nova dns-create-public-domain"></a><a href="https://docs.openstack.org/mitaka/cli-reference/nova.html#nova-dns-create-public-domain" target="_blank" rel="noopener">nova dns-create-public-domain</a></h5><h5 id="nova-dns-delete"><a href="#nova-dns-delete" class="headerlink" title="nova dns-delete"></a><a href="https://docs.openstack.org/mitaka/cli-reference/nova.html#nova-dns-delete" target="_blank" rel="noopener">nova dns-delete</a></h5><h5 id="nova-dns-delete-domain"><a href="#nova-dns-delete-domain" class="headerlink" title="nova dns-delete-domain"></a><a href="https://docs.openstack.org/mitaka/cli-reference/nova.html#nova-dns-delete-domain" target="_blank" rel="noopener">nova dns-delete-domain</a></h5><h5 id="nova-dns-domains"><a href="#nova-dns-domains" class="headerlink" title="nova dns-domains"></a><a href="https://docs.openstack.org/mitaka/cli-reference/nova.html#nova-dns-domains" target="_blank" rel="noopener">nova dns-domains</a></h5><h5 id="nova-dns-list"><a href="#nova-dns-list" class="headerlink" title="nova dns-list"></a><a href="https://docs.openstack.org/mitaka/cli-reference/nova.html#nova-dns-list" target="_blank" rel="noopener">nova dns-list</a></h5><h3 id="命令用途"><a href="#命令用途" class="headerlink" title="命令用途"></a>命令用途</h3><p>废弃，这是nova还有neutron的时代才用的命令</p>
-<h3 id="常用命令参数"><a href="#常用命令参数" class="headerlink" title="常用命令参数"></a>常用命令参数</h3><h3 id="使用例子"><a href="#使用例子" class="headerlink" title="使用例子"></a>使用例子</h3><h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3>
+<h3 id="相关命令集合"><a href="#相关命令集合" class="headerlink" title="相关命令集合"></a>相关命令集合</h3><p>见<a href="https://docs.openstack.org/python-novaclient/latest/cli/nova.html" target="_blank" rel="noopener">官网</a>，截取相关命令如下：</p>
+<h5 id="nova-add-secgroup"><a href="#nova-add-secgroup" class="headerlink" title="nova add-secgroup"></a><a href="https://docs.openstack.org/python-novaclient/latest/cli/nova.html#nova-add-secgroup" target="_blank" rel="noopener">nova add-secgroup</a></h5><h5 id="nova-list-secgroup"><a href="#nova-list-secgroup" class="headerlink" title="nova list-secgroup"></a><a href="https://docs.openstack.org/python-novaclient/latest/cli/nova.html#nova-list-secgroup" target="_blank" rel="noopener">nova list-secgroup</a></h5><h5 id="nova-remove-secgroup"><a href="#nova-remove-secgroup" class="headerlink" title="nova remove-secgroup"></a><a href="https://docs.openstack.org/python-novaclient/latest/cli/nova.html#nova-remove-secgroup" target="_blank" rel="noopener">nova remove-secgroup</a></h5><p>##### </p>
+<h3 id="命令用途"><a href="#命令用途" class="headerlink" title="命令用途"></a>命令用途</h3><p>nova add-secgroup:为指定虚拟机添加一个指定安全组<br>nova list-secgroup:列出指定虚拟机的所有安全组<br>nova remove-secgroup：为指定虚拟机删除指定安全组  </p>
+<h3 id="常用命令参数"><a href="#常用命令参数" class="headerlink" title="常用命令参数"></a>常用命令参数</h3><p><server> ：虚拟机的名字或者ID  </server></p>
+<p><secgroup>：安全组的名字或者ID</secgroup></p>
+<h3 id="使用例子"><a href="#使用例子" class="headerlink" title="使用例子"></a>使用例子</h3><h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3>
       
     </div>
     
@@ -331,8 +334,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/09/19/nova-cloudpipe/" rel="next" title="nova cloudpipe">
-                <i class="fa fa-chevron-left"></i> nova cloudpipe
+              <a href="/2018/09/19/nova-backup/" rel="next" title="nova backup">
+                <i class="fa fa-chevron-left"></i> nova backup
               </a>
             
           </div>
@@ -340,10 +343,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/19/nova-pike-cli/" rel="prev" title="nova pike cli">
-                nova pike cli <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -466,7 +465,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#目录结构"><span class="nav-number">1.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关命令集合"><span class="nav-number">2.</span> <span class="nav-text">相关命令集合</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#nova-dns-create"><span class="nav-number">2.0.1.</span> <span class="nav-text">nova dns-create</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#nova-dns-create-private-domain"><span class="nav-number">2.0.2.</span> <span class="nav-text">nova dns-create-private-domain</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#nova-dns-create-public-domain"><span class="nav-number">2.0.3.</span> <span class="nav-text">nova dns-create-public-domain</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#nova-dns-delete"><span class="nav-number">2.0.4.</span> <span class="nav-text">nova dns-delete</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#nova-dns-delete-domain"><span class="nav-number">2.0.5.</span> <span class="nav-text">nova dns-delete-domain</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#nova-dns-domains"><span class="nav-number">2.0.6.</span> <span class="nav-text">nova dns-domains</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#nova-dns-list"><span class="nav-number">2.0.7.</span> <span class="nav-text">nova dns-list</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令用途"><span class="nav-number">3.</span> <span class="nav-text">命令用途</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用命令参数"><span class="nav-number">4.</span> <span class="nav-text">常用命令参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用例子"><span class="nav-number">5.</span> <span class="nav-text">使用例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文章"><span class="nav-number">6.</span> <span class="nav-text">参考文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思考"><span class="nav-number">7.</span> <span class="nav-text">思考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#目录结构"><span class="nav-number">1.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关命令集合"><span class="nav-number">2.</span> <span class="nav-text">相关命令集合</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#nova-add-secgroup"><span class="nav-number">2.0.1.</span> <span class="nav-text">nova add-secgroup</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#nova-list-secgroup"><span class="nav-number">2.0.2.</span> <span class="nav-text">nova list-secgroup</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#nova-remove-secgroup"><span class="nav-number">2.0.3.</span> <span class="nav-text">nova remove-secgroup</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令用途"><span class="nav-number">3.</span> <span class="nav-text">命令用途</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用命令参数"><span class="nav-number">4.</span> <span class="nav-text">常用命令参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用例子"><span class="nav-number">5.</span> <span class="nav-text">使用例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文章"><span class="nav-number">6.</span> <span class="nav-text">参考文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思考"><span class="nav-number">7.</span> <span class="nav-text">思考</span></a></li></ol></div>
             
 
           </div>
