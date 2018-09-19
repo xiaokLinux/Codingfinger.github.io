@@ -232,6 +232,1118 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/19/nova-availability-zone/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao_k77">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Codingfinger">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/19/nova-availability-zone/" itemprop="url">nova availability zone</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T17:15:26+08:00">
+                2018-09-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>一个availability zone是一个逻辑上的划分，划分对象是块存储，计算节点，网络。（需要V2版本才支持） </p>
+<p>availability zone list：List availability zones and their status</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">openstack availability zone list</span><br><span class="line">    [--compute]</span><br><span class="line">    [--network]</span><br><span class="line">    [--volume]</span><br><span class="line">    [--long]</span><br><span class="line"></span><br><span class="line">--compute</span><br><span class="line">List compute availability zones</span><br><span class="line"></span><br><span class="line">--network</span><br><span class="line">List network availability zones</span><br><span class="line"></span><br><span class="line">--volume</span><br><span class="line">List volume availability zones</span><br><span class="line"></span><br><span class="line">--long</span><br><span class="line">List additional fields in output</span><br></pre></td></tr></table></figure>
+<p>以及nova availability-zone-list可以看到nova相关的服务在哪个az下，当前是否可用，最后更新时间等<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># nova availability-zone-list</span><br><span class="line">+-----------------------+----------------------------------------+</span><br><span class="line">| Name                  | Status                                 |</span><br><span class="line">+-----------------------+----------------------------------------+</span><br><span class="line">| internal              | available                              |</span><br><span class="line">| |- poc1-01            |                                        |</span><br><span class="line">| | |- nova-conductor   | enabled :-) 2018-09-19T09:10:06.000000 |</span><br><span class="line">| | |- nova-scheduler   | enabled :-) 2018-09-19T09:10:01.000000 |</span><br><span class="line">| | |- nova-consoleauth | enabled :-) 2018-09-19T09:09:58.000000 |</span><br><span class="line">| nova                  | available                              |</span><br><span class="line">| |- poc1-01            |                                        |</span><br><span class="line">| | |- nova-compute     | enabled :-) 2018-09-19T09:10:00.000000 |</span><br><span class="line">| |- poc1-02            |                                        |</span><br><span class="line">| | |- nova-compute     | enabled :-) 2018-09-19T09:10:05.000000 |</span><br><span class="line">+-----------------------+----------------------------------------+</span><br></pre></td></tr></table></figure></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/19/nova-pike-cli/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao_k77">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Codingfinger">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/09/19/nova-pike-cli/" itemprop="url">nova pike cli</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T17:01:29+08:00">
+                2018-09-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h3 id="很多命令在pike版本或者pike版本之后就会废弃的命令，这里做一个统计，方便学习"><a href="#很多命令在pike版本或者pike版本之后就会废弃的命令，这里做一个统计，方便学习" class="headerlink" title="很多命令在pike版本或者pike版本之后就会废弃的命令，这里做一个统计，方便学习"></a>很多命令在pike版本或者pike版本之后就会废弃的命令，这里做一个统计，方便学习</h3><blockquote>
+<p>持续整理，进度保存：availability-zone-list</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>弃用的命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>absolute-limits</td>
+<td>弃用，改为使用限制（这个原来是干嘛的？）</td>
+</tr>
+<tr>
+<td>add-floating-ip</td>
+<td>弃用，使用floating-ip-associate</td>
+</tr>
+<tr>
+<td>add-fixed-ip</td>
+<td>给虚拟机一个新的IP地址(pike版本之后弃用，请改用python-neutronclient或者python-openstackclient。指定小于2.44的–os-compute-api-version继续使用此命令，直到将其删除)</td>
+</tr>
+<tr>
+<td>cloudpipe-configure</td>
+<td>弃用</td>
+</tr>
+<tr>
+<td>cloudpipe-create</td>
+<td>弃用</td>
+</tr>
+<tr>
+<td>cloudpipe-list</td>
+<td>弃用</td>
+</tr>
+<tr>
+<td>dns-create</td>
+<td></td>
+</tr>
+<tr>
+<td>dns-create-private-domain</td>
+<td></td>
+</tr>
+<tr>
+<td>dns-create-public-domain</td>
+<td></td>
+</tr>
+<tr>
+<td>dns-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>dns-delete-domain</td>
+<td></td>
+</tr>
+<tr>
+<td>dns-domains</td>
+<td></td>
+</tr>
+<tr>
+<td>dns-list</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>add-secgroup</td>
+<td>给虚拟机一个新的安全组</td>
+</tr>
+<tr>
+<td>agent-create</td>
+<td>$</td>
+</tr>
+<tr>
+<td>agent-delete</td>
+<td>$</td>
+</tr>
+<tr>
+<td>agent-list</td>
+<td>$</td>
+</tr>
+<tr>
+<td>agent-modify</td>
+<td>$</td>
+</tr>
+<tr>
+<td>aggregate-add-host</td>
+<td>把计算节点加到指定的主机聚合中</td>
+</tr>
+<tr>
+<td>aggregate-create</td>
+<td>创建一个主机聚合</td>
+</tr>
+<tr>
+<td>aggregate-delete</td>
+<td>删除一个主机聚合</td>
+</tr>
+<tr>
+<td>aggregate-details</td>
+<td>弃用，使用 aggregate-show查看一个主机聚合的描述</td>
+</tr>
+<tr>
+<td>aggregate-list</td>
+<td>输出主机聚合列表</td>
+</tr>
+<tr>
+<td>aggregate-remove-host</td>
+<td>将一个计算节点在指定聚合中移除</td>
+</tr>
+<tr>
+<td>aggregate-set-metadata</td>
+<td>更新主机聚合的元数据</td>
+</tr>
+<tr>
+<td>aggregate-show</td>
+<td>查看主机聚合的详情</td>
+</tr>
+<tr>
+<td>aggregate-update</td>
+<td>更新主机聚合的名称和可用域 $</td>
+</tr>
+<tr>
+<td>availability-zone-list</td>
+<td>输出所有的可用域列表</td>
+</tr>
+<tr>
+<td>backup</td>
+<td>创建虚拟机快照$</td>
+</tr>
+<tr>
+<td>boot</td>
+<td>启动一个虚拟机$</td>
+</tr>
+<tr>
+<td>clear-password</td>
+<td>清除虚拟机的admin密码</td>
+</tr>
+<tr>
+<td>console-log</td>
+<td>输出虚拟机的控制台日志</td>
+</tr>
+<tr>
+<td>credentials</td>
+<td>$</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>立即关闭指定虚拟机并删除</td>
+</tr>
+<tr>
+<td>diagnostics</td>
+<td>$</td>
+</tr>
+<tr>
+<td>endpoints</td>
+<td></td>
+</tr>
+<tr>
+<td>evacuate</td>
+<td></td>
+</tr>
+<tr>
+<td>fixed-ip-get</td>
+<td></td>
+</tr>
+<tr>
+<td>fixed-ip-reserve</td>
+<td></td>
+</tr>
+<tr>
+<td>fixed-ip-unreserve</td>
+<td></td>
+</tr>
+<tr>
+<td>flavor-access-add</td>
+<td></td>
+</tr>
+<tr>
+<td>flavor-access-list</td>
+<td></td>
+</tr>
+<tr>
+<td>flavor-access-remove</td>
+<td></td>
+</tr>
+<tr>
+<td>flavor-create</td>
+<td>创建一个flavor</td>
+</tr>
+<tr>
+<td>flavor-delete</td>
+<td>删除指定的flavor</td>
+</tr>
+<tr>
+<td>flavor-key</td>
+<td></td>
+</tr>
+<tr>
+<td>flavor-list</td>
+<td>列出flavor列表</td>
+</tr>
+<tr>
+<td>flavor-show</td>
+<td>查看某个flavor的详情</td>
+</tr>
+<tr>
+<td>floating-ip-associate</td>
+<td>分配一个浮动ip给虚拟机</td>
+</tr>
+<tr>
+<td>floating-ip-bulk-create</td>
+<td></td>
+</tr>
+<tr>
+<td>floating-ip-bulk-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>floating-ip-bulk-list</td>
+<td></td>
+</tr>
+<tr>
+<td>floating-ip-create</td>
+<td>为当前租户分配一个浮动ip</td>
+</tr>
+<tr>
+<td>floating-ip-delete</td>
+<td>删除一个浮动ip</td>
+</tr>
+<tr>
+<td>floating-ip-disassociate</td>
+<td>删除虚拟机上的一个浮动ip</td>
+</tr>
+<tr>
+<td>floating-ip-list</td>
+<td>浮动IP列表</td>
+</tr>
+<tr>
+<td>floating-ip-pool-list</td>
+<td>浮动ip池列表</td>
+</tr>
+<tr>
+<td>get-mks-console</td>
+<td></td>
+</tr>
+<tr>
+<td>get-password</td>
+<td>获取虚拟机的admin密码</td>
+</tr>
+<tr>
+<td>get-rdp-console</td>
+<td></td>
+</tr>
+<tr>
+<td>get-serial-console</td>
+<td></td>
+</tr>
+<tr>
+<td>get-spice-console</td>
+<td></td>
+</tr>
+<tr>
+<td>get-vnc-console</td>
+<td></td>
+</tr>
+<tr>
+<td>host-action</td>
+<td></td>
+</tr>
+<tr>
+<td>host-describe</td>
+<td></td>
+</tr>
+<tr>
+<td>host-list</td>
+<td></td>
+</tr>
+<tr>
+<td>host-update</td>
+<td></td>
+</tr>
+<tr>
+<td>hypervisor-list</td>
+<td></td>
+</tr>
+<tr>
+<td>hypervisor-servers</td>
+<td></td>
+</tr>
+<tr>
+<td>hypervisor-show</td>
+<td></td>
+</tr>
+<tr>
+<td>hypervisor-stats</td>
+<td></td>
+</tr>
+<tr>
+<td>hypervisor-uptime</td>
+<td></td>
+</tr>
+<tr>
+<td>image-create</td>
+<td></td>
+</tr>
+<tr>
+<td>image-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>image-list</td>
+<td></td>
+</tr>
+<tr>
+<td>image-meta</td>
+<td></td>
+</tr>
+<tr>
+<td>image-show</td>
+<td></td>
+</tr>
+<tr>
+<td>interface-attach</td>
+<td></td>
+</tr>
+<tr>
+<td>interface-detach</td>
+<td></td>
+</tr>
+<tr>
+<td>interface-list</td>
+<td></td>
+</tr>
+<tr>
+<td>keypair-add</td>
+<td></td>
+</tr>
+<tr>
+<td>keypair-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>keypair-list</td>
+<td></td>
+</tr>
+<tr>
+<td>keypair-show</td>
+<td></td>
+</tr>
+<tr>
+<td>limits</td>
+<td></td>
+</tr>
+<tr>
+<td>list</td>
+<td></td>
+</tr>
+<tr>
+<td>list-secgroup</td>
+<td></td>
+</tr>
+<tr>
+<td>live-migration</td>
+<td></td>
+</tr>
+<tr>
+<td>live-migration-abort</td>
+<td></td>
+</tr>
+<tr>
+<td>live-migration-force-complete</td>
+<td></td>
+</tr>
+<tr>
+<td>lock</td>
+<td></td>
+</tr>
+<tr>
+<td>meta</td>
+<td></td>
+</tr>
+<tr>
+<td>migrate</td>
+<td></td>
+</tr>
+<tr>
+<td>network-associate-host</td>
+<td></td>
+</tr>
+<tr>
+<td>network-associate-project</td>
+<td></td>
+</tr>
+<tr>
+<td>network-create</td>
+<td></td>
+</tr>
+<tr>
+<td>network-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>network-disassociate</td>
+<td></td>
+</tr>
+<tr>
+<td>network-list</td>
+<td></td>
+</tr>
+<tr>
+<td>network-show</td>
+<td></td>
+</tr>
+<tr>
+<td>pause</td>
+<td></td>
+</tr>
+<tr>
+<td>quota-class-show</td>
+<td></td>
+</tr>
+<tr>
+<td>quota-class-update</td>
+<td></td>
+</tr>
+<tr>
+<td>quota-defaults</td>
+<td></td>
+</tr>
+<tr>
+<td>quota-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>quota-show</td>
+<td></td>
+</tr>
+<tr>
+<td>quota-update</td>
+<td></td>
+</tr>
+<tr>
+<td>rate-limits</td>
+<td></td>
+</tr>
+<tr>
+<td>reboot</td>
+<td>重启虚拟机</td>
+</tr>
+<tr>
+<td>rebuild</td>
+<td>关机使用指定的镜像重启虚拟机</td>
+</tr>
+<tr>
+<td>refresh-network</td>
+<td></td>
+</tr>
+<tr>
+<td>remove-fixed-ip</td>
+<td></td>
+</tr>
+<tr>
+<td>remove-floating-ip</td>
+<td></td>
+</tr>
+<tr>
+<td>remove-secgroup</td>
+<td></td>
+</tr>
+<tr>
+<td>rename</td>
+<td></td>
+</tr>
+<tr>
+<td>rescue</td>
+<td></td>
+</tr>
+<tr>
+<td>reset-network</td>
+<td></td>
+</tr>
+<tr>
+<td>reset-state</td>
+<td></td>
+</tr>
+<tr>
+<td>resize</td>
+<td></td>
+</tr>
+<tr>
+<td>resize-confirm</td>
+<td></td>
+</tr>
+<tr>
+<td>resize-revert</td>
+<td></td>
+</tr>
+<tr>
+<td>resume</td>
+<td></td>
+</tr>
+<tr>
+<td>root-password</td>
+<td></td>
+</tr>
+<tr>
+<td>scrub</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-add-default-rule</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-add-group-rule</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-add-rule</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-create</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-delete-default-rule</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-delete-group-rule</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-delete-rule</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-list</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-list-default-rules</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-list-rules</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-update</td>
+<td></td>
+</tr>
+<tr>
+<td>server-group-create</td>
+<td></td>
+</tr>
+<tr>
+<td>server-group-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>server-group-get</td>
+<td></td>
+</tr>
+<tr>
+<td>server-group-list</td>
+<td></td>
+</tr>
+<tr>
+<td>server-migration-list</td>
+<td></td>
+</tr>
+<tr>
+<td>server-migration-show</td>
+<td></td>
+</tr>
+<tr>
+<td>service-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>service-disable</td>
+<td></td>
+</tr>
+<tr>
+<td>service-enable</td>
+<td></td>
+</tr>
+<tr>
+<td>service-force-down</td>
+<td></td>
+</tr>
+<tr>
+<td>service-list</td>
+<td></td>
+</tr>
+<tr>
+<td>set-password</td>
+<td></td>
+</tr>
+<tr>
+<td>shelve</td>
+<td></td>
+</tr>
+<tr>
+<td>shelve-offload</td>
+<td></td>
+</tr>
+<tr>
+<td>show</td>
+<td>显示指定虚拟机的详细信息</td>
+</tr>
+<tr>
+<td>ssh</td>
+<td></td>
+</tr>
+<tr>
+<td>start</td>
+<td></td>
+</tr>
+<tr>
+<td>stop</td>
+<td></td>
+</tr>
+<tr>
+<td>suspend</td>
+<td></td>
+</tr>
+<tr>
+<td>trigger-crash-dump</td>
+<td></td>
+</tr>
+<tr>
+<td>unlock</td>
+<td></td>
+</tr>
+<tr>
+<td>unpause</td>
+<td></td>
+</tr>
+<tr>
+<td>unrescue</td>
+<td></td>
+</tr>
+<tr>
+<td>unshelve</td>
+<td></td>
+</tr>
+<tr>
+<td>update</td>
+<td></td>
+</tr>
+<tr>
+<td>usage</td>
+<td></td>
+</tr>
+<tr>
+<td>usage-list</td>
+<td></td>
+</tr>
+<tr>
+<td>version-list</td>
+<td></td>
+</tr>
+<tr>
+<td>virtual-interface-list</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-attach</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-attachments</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-create</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-detach</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-list</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-show</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-snapshot-create</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-snapshot-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-snapshot-list</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-snapshot-show</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-type-create</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-type-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-type-list</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-update</td>
+<td></td>
+</tr>
+<tr>
+<td>x509-create-cert</td>
+<td></td>
+</tr>
+<tr>
+<td>x509-get-root-cert</td>
+<td></td>
+</tr>
+<tr>
+<td>bash-completion</td>
+<td></td>
+</tr>
+<tr>
+<td>help</td>
+<td></td>
+</tr>
+<tr>
+<td>host-evacuate-live</td>
+<td></td>
+</tr>
+<tr>
+<td>cell-capacities</td>
+<td></td>
+</tr>
+<tr>
+<td>cell-show</td>
+<td></td>
+</tr>
+<tr>
+<td>migration-list</td>
+<td></td>
+</tr>
+<tr>
+<td>instance-action</td>
+<td></td>
+</tr>
+<tr>
+<td>instance-action-list</td>
+<td></td>
+</tr>
+<tr>
+<td>net</td>
+<td></td>
+</tr>
+<tr>
+<td>net-create</td>
+<td></td>
+</tr>
+<tr>
+<td>net-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>net-list</td>
+<td></td>
+</tr>
+<tr>
+<td>tenant-network-create</td>
+<td></td>
+</tr>
+<tr>
+<td>tenant-network-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>tenant-network-list</td>
+<td></td>
+</tr>
+<tr>
+<td>tenant-network-show</td>
+<td></td>
+</tr>
+<tr>
+<td>host-servers-migrate</td>
+<td></td>
+</tr>
+<tr>
+<td>host-evacuate</td>
+<td></td>
+</tr>
+<tr>
+<td>host-meta</td>
+<td></td>
+</tr>
+<tr>
+<td>list-extensions</td>
+<td></td>
+</tr>
+<tr>
+<td>force-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>restore</td>
+<td></td>
+</tr>
+<tr>
+<td>baremetal-interface-add</td>
+<td></td>
+</tr>
+<tr>
+<td>baremetal-interface-list</td>
+<td></td>
+</tr>
+<tr>
+<td>baremetal-interface-remove</td>
+<td></td>
+</tr>
+<tr>
+<td>baremetal-node-create</td>
+<td></td>
+</tr>
+<tr>
+<td>baremetal-node-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>baremetal-node-list</td>
+<td></td>
+</tr>
+<tr>
+<td>baremetal-node-show</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>nova选项参数<br>参数名字|描述<br>—|—<br>–version|<br>–debug|<br>–os-cache|<br>–timings|<br>–os-region-name <region-name>|<br>–service-type <service-type>|<br>–service-name <service-name>|<br>–volume-service-name <volume-service-name>|<br>–os-endpoint-type <endpoint-type>|<br>–os-compute-api-version <compute-api-ver>|<br>–bypass-url <bypass-url>|<br>–os-auth-type <name>, –os-auth-plugin <name>|</name></name></bypass-url></compute-api-ver></endpoint-type></volume-service-name></service-name></service-type></region-name></p>
+<hr>
+<p>实验：</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/19/nova-dns/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -1328,334 +2440,13 @@
 
 
     
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/friendsChain/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="xiao_k77">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Codingfinger">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/02/friendsChain/" itemprop="url">friendsChain</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T17:58:43+08:00">
-                2018-07-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <ol>
-<li><a href="https://www.cnblogs.com/VxiaoG/" target="_blank" rel="noopener">python – gaoren</a></li>
-</ol>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
-      
-
-  
-
-  
-  
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/02/My-New-Post/">
-
-    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
-      <meta itemprop="name" content="xiao_k77">
-      <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.gif">
-    </span>
-
-    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
-      <meta itemprop="name" content="Codingfinger">
-    </span>
-
-    
-      <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2018/07/02/My-New-Post/" itemprop="url">post something...</a></h1>
-        
-
-        <div class="post-meta">
-          <span class="post-time">
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-02T17:11:12+08:00">
-                2018-07-02
-              </time>
-            
-
-            
-
-            
-          </span>
-
-          
-
-          
-            
-          
-
-          
-          
-
-          
-
-          
-
-          
-
-        </div>
-      </header>
-    
-
-    
-    
-    
-    <div class="post-body" itemprop="articleBody">
-
-      
-      
-
-      
-        
-          
-            <h1 id="FAQ"><a href="#FAQ" class="headerlink" title="FAQ"></a>FAQ</h1><h2 id="用法类"><a href="#用法类" class="headerlink" title="用法类"></a>用法类</h2><blockquote>
-<p>@six.add_metaclass(ManagerMeta)起什么作用？</p>
-</blockquote>
-<p>six是python一个用于版本(python2和3)兼容的模块,add_metaclass是一个类修饰器</p>
-<blockquote>
-<p>新式类(object)和经典类，搜索顺序是怎么样的？</p>
-</blockquote>
-<p>新式类广度优先，经典类深度优先</p>
-<blockquote>
-<p>type类是什么?</p>
-</blockquote>
-<p>创建对象用的，这个可以动态创建类</p>
-<blockquote>
-<p>python中metaclass(元类)是什么？在python语言中的作用和意义是什么？</p>
-</blockquote>
-<p>元类可以用来控制类的生成。常用在编写ORM框架时，所以的类只能动态定义，因为只有使用者才能根据表结构定义出相应的类。对于子类来说，这是一种不可见的继承一样</p>
-<blockquote>
-<p>python标准库inspect功能是什么？</p>
-</blockquote>
-<p>inspect用于手机python对象的信息，可以获取类或函数的参数信息，源码，解析堆栈，对对象进行类型检测：常用方法</p>
-<ol>
-<li>ismodule,isclass,ismethod,isfunction,isbuiltin一系列判断对象类型的方法，大多包装了isinstance(object, types.FunctionType)之类语句的函数。</li>
-<li>ismetod(value)，检查是否是instance method。判断标准是看是否提供<strong>doc</strong>、<strong>name</strong>、im_class、im_func、im_self属性</li>
-</ol>
-<h2 id="关于nova代码"><a href="#关于nova代码" class="headerlink" title="关于nova代码"></a>关于nova代码</h2><blockquote>
-<p>nova.manager中Manager接口类有一个元类的修饰器(ManagerMeta)，这个元类的作用是什么？</p>
-</blockquote>
-<p>ManagerMeta这是一个类，继承了profiler.get_traced_meta()方法返回的profiler.TracedMeta类。第二继承是type。对于TracedMeta类是为Manager的method和function属性打上trace修饰器</p>
-<blockquote>
-<p>profiler中修饰器trace的作用是什么？</p>
-</blockquote>
-<p>为代码打上调试点，签名为def trace(name, info=None, hide_args=False, allow_multiple_trace=True)。由于目标是走主要流程，trace先跳过</p>
-<blockquote>
-<p>ManagerMeta的第二继承是 type(PeriodicTasks))，这有什么作用？</p>
-</blockquote>
-<p>就是继承type对象？这个不确认是否还有其他魔法用法，不过表面上看起来就是继承type</p>
-<blockquote>
-<p>python内置函数property的作用是什么？</p>
-</blockquote>
-<p>property（getter,setter,deleter）,print x。则x=value讲调用getter()</p>
-<blockquote>
-<p>Nova中用户的登陆信息保存在什么地方，如何传递？</p>
-</blockquote>
-<p>在servergroup中定义了两种driver，db和mc根据配置选用driver来保存信息。在内存传递这些变量是通过threading.local来传递的</p>
-<h2 id="oslo-vif"><a href="#oslo-vif" class="headerlink" title="oslo_vif"></a>oslo_vif</h2><blockquote>
-<p>这个组件的作用？</p>
-</blockquote>
-<p>用来在OpenStack中插入和拔出虚拟接口（VIF）的库。它提供：</p>
-<ol>
-<li>表示各种虚拟接口及其组件的版本化对象</li>
-<li>提供plug()和unplug()接口的基本VIF插件类</li>
-<li>两个网络后端插件OpenVswitch和Linux-bridge</li>
-</ol>
-<p>os-vif旨在定义用于在OpenStack中表示VIF类型的通用模型。 除了包含的两个插件外，其他网络后端的所有插件都保存在单独的代码存储库中。</p>
-<h2 id="oslo-content"><a href="#oslo-content" class="headerlink" title="oslo_content"></a>oslo_content</h2><blockquote>
-<p>这个组件的作用？</p>
-</blockquote>
-<p>用来保存请求的上下文信息的基类，有两个作用：</p>
-<ol>
-<li>保存web请求的安全信息</li>
-<li>用来为oslo.log提供上下文详情</li>
-</ol>
-<blockquote>
-<p>RequestContext基类的作用，提供了那些方法？</p>
-</blockquote>
-<p>这个类的每个实例化对象都保存了一个web请求上下文信息。该类中保存的字段有：请求的token信息，用户信息，项目信息，服务信息等；在实例化时会为每个对象生成一个request_id在项目中唯一表示该对象。还提供了一系列其他方法以方便OpenStack其他项目调用。主要有：</p>
-<ol>
-<li>global_id（）返回全局id，如果我们想使用一个全局的request_id可以使用此方法</li>
-<li>from_dict（values，**kwargs）使用给定的对象创建上下文对象</li>
-<li>from_environ(environ, **kwargs)：使用环境变量创建上下文对象。</li>
-<li>to_dict()：返回一个包含上下文属性的字典。</li>
-<li>to_policy_values()：为oslo.policy组件提供上下文信息。</li>
-<li>update_store()：在当前线程中保存该上下文对象</li>
-<li>get_logging_values()：为oslo.log组件生成日志信息提供上下文信息。</li>
-</ol>
-<blockquote>
-<p>如何使用RequestContext类?</p>
-</blockquote>
-<p>一般用法是创建一个继承自RequestContext类的子类，并在子类中封装项目自身所需的其他上下文属性和方法。例如nova的nova.context.RequestContext添加了db_connection、mq_conection、timestamp等属性，也添加了get_auth_plugin()、elevated()、can()等方法。</p>
-<p>此外，nova在nova.context.RequestContext的基础上继续封装了get_context()、get_admin_context()，判断用户角色的方法is_user_context()等可以更加方便在Nova项目中使用上下文信息。<strong>定义在nova.context.py中</strong></p>
-<h2 id="心得"><a href="#心得" class="headerlink" title="心得"></a>心得</h2><blockquote>
-<p>一个大型的系统如何抽象出对象模型，openstack是很好的教材</p>
-</blockquote>
-<h3 id="nova"><a href="#nova" class="headerlink" title="nova"></a>nova</h3><p>我的理解是nova实现的是机房管理员的一个职能，从这个前提出发的话。可以抽象出一个管理员组（主机管理员，硬盘管理员，操作系统管理，网络管理等）<br>管理只是提供管理功能和调用接口，你想加快硬盘就去找硬盘管理官讨要一块硬盘，想换一个操作系统就去找操作系统管理员。但是管理的资源来自何处，所以对应的还有对资源提供者的抽象（resource provider），管理员需要频繁地和提供者确认资源使用情况</p>
-
-          
-        
-      
-    </div>
-    
-    
-    
-
-    
-
-    
-
-    
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
-        <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
-  </article>
-
-
-    
   </section>
 
   
+  <nav class="pagination">
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right"></i></a>
+  </nav>
+
 
 
           </div>
@@ -1699,7 +2490,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-count">12</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>

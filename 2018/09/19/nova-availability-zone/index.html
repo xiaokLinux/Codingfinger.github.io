@@ -79,17 +79,17 @@
 
 
 
-<meta name="description" content="目录结构 相关命令集合 命令用途 常用命令参数 使用例子  相关命令集合见官网，截取相关命令如下：   nova cloudpipe-configurenova cloudpipe-createnova cloudpipe-list#####  命令用途nova cloudpipe-create为指定的project创建一个vpn实例，在代码实现上就是启一台tiny的虚拟机，在其上有一个VPN的服">
+<meta name="description" content="简介一个availability zone是一个逻辑上的划分，划分对象是块存储，计算节点，网络。（需要V2版本才支持）  availability zone list：List availability zones and their status 1234567891011121314151617openstack availability zone list    [--compute]">
 <meta property="og:type" content="article">
-<meta property="og:title" content="nova cloudpipe">
-<meta property="og:url" content="http://yoursite.com/2018/09/19/nova-cloudpipe/index.html">
+<meta property="og:title" content="nova availability zone">
+<meta property="og:url" content="http://yoursite.com/2018/09/19/nova-availability-zone/index.html">
 <meta property="og:site_name" content="Codingfinger">
-<meta property="og:description" content="目录结构 相关命令集合 命令用途 常用命令参数 使用例子  相关命令集合见官网，截取相关命令如下：   nova cloudpipe-configurenova cloudpipe-createnova cloudpipe-list#####  命令用途nova cloudpipe-create为指定的project创建一个vpn实例，在代码实现上就是启一台tiny的虚拟机，在其上有一个VPN的服">
+<meta property="og:description" content="简介一个availability zone是一个逻辑上的划分，划分对象是块存储，计算节点，网络。（需要V2版本才支持）  availability zone list：List availability zones and their status 1234567891011121314151617openstack availability zone list    [--compute]">
 <meta property="og:locale" content="zh-Hans">
-<meta property="og:updated_time" content="2018-09-19T08:45:04.000Z">
+<meta property="og:updated_time" content="2018-09-19T09:21:26.000Z">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:title" content="nova cloudpipe">
-<meta name="twitter:description" content="目录结构 相关命令集合 命令用途 常用命令参数 使用例子  相关命令集合见官网，截取相关命令如下：   nova cloudpipe-configurenova cloudpipe-createnova cloudpipe-list#####  命令用途nova cloudpipe-create为指定的project创建一个vpn实例，在代码实现上就是启一台tiny的虚拟机，在其上有一个VPN的服">
+<meta name="twitter:title" content="nova availability zone">
+<meta name="twitter:description" content="简介一个availability zone是一个逻辑上的划分，划分对象是块存储，计算节点，网络。（需要V2版本才支持）  availability zone list：List availability zones and their status 1234567891011121314151617openstack availability zone list    [--compute]">
 
 
 
@@ -119,13 +119,13 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2018/09/19/nova-cloudpipe/"/>
+  <link rel="canonical" href="http://yoursite.com/2018/09/19/nova-availability-zone/"/>
 
 
 
 
 
-  <title>nova cloudpipe | Codingfinger</title>
+  <title>nova availability zone | Codingfinger</title>
   
 
 
@@ -232,7 +232,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/19/nova-cloudpipe/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/19/nova-availability-zone/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="xiao_k77">
@@ -249,7 +249,7 @@
 
         
         
-          <h1 class="post-title" itemprop="name headline">nova cloudpipe</h1>
+          <h1 class="post-title" itemprop="name headline">nova availability zone</h1>
         
 
         <div class="post-meta">
@@ -261,7 +261,7 @@
               
                 <span class="post-meta-item-text">发表于</span>
               
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T15:55:56+08:00">
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T17:15:26+08:00">
                 2018-09-19
               </time>
             
@@ -299,18 +299,11 @@
       
 
       
-        <h3 id="目录结构"><a href="#目录结构" class="headerlink" title="目录结构"></a>目录结构</h3><ul>
-<li>相关命令集合</li>
-<li>命令用途</li>
-<li>常用命令参数</li>
-<li>使用例子</li>
-</ul>
-<h3 id="相关命令集合"><a href="#相关命令集合" class="headerlink" title="相关命令集合"></a>相关命令集合</h3><p>见<a href="https://docs.openstack.org/mitaka/cli-reference/nova.html#nova-cloudpipe-configure" target="_blank" rel="noopener">官网</a>，截取相关命令如下：  </p>
-<h5 id="nova-cloudpipe-configure"><a href="#nova-cloudpipe-configure" class="headerlink" title="nova cloudpipe-configure"></a><a href="https://docs.openstack.org/mitaka/cli-reference/nova.html#nova-cloudpipe-configure" target="_blank" rel="noopener">nova cloudpipe-configure</a></h5><h5 id="nova-cloudpipe-create"><a href="#nova-cloudpipe-create" class="headerlink" title="nova cloudpipe-create"></a><a href="https://docs.openstack.org/mitaka/cli-reference/nova.html#nova-cloudpipe-create" target="_blank" rel="noopener">nova cloudpipe-create</a></h5><h5 id="nova-cloudpipe-list"><a href="#nova-cloudpipe-list" class="headerlink" title="nova cloudpipe-list"></a><a href="https://docs.openstack.org/mitaka/cli-reference/nova.html#nova-cloudpipe-list" target="_blank" rel="noopener">nova cloudpipe-list</a></h5><p>##### </p>
-<h3 id="命令用途"><a href="#命令用途" class="headerlink" title="命令用途"></a>命令用途</h3><p><del>nova cloudpipe-create为指定的project创建一个vpn实例，在代码实现上就是启一台tiny的虚拟机，在其上有一个VPN的服务器（代码nova.cloudpipe）这个服务器连接到每个vlan的第一个ip地址（预留给vpn）来实现用户访问多个vlan的虚拟机?</del></p>
-<p><del>VLan模式下compute为每一个project创建一个VLAN和网桥（所以多计算节点需要交换机支持vlan tag），该项目获得一个范围内的私有ips，该ips内只有同一个vlan可以访问。为了让一个用户可以访问他们项目内的实例，一个专门的VPN的实例（code named cloudpipe）需要被创建。compute产生一个用户访问的VPN的认证和秘钥，并且自动开始VPN</del><br>这个命令在Pike版本之后就删掉了，12年的老黄历翻篇了。在老版本有用到再过来补充</p>
-<h3 id="常用命令参数"><a href="#常用命令参数" class="headerlink" title="常用命令参数"></a>常用命令参数</h3><h3 id="使用例子"><a href="#使用例子" class="headerlink" title="使用例子"></a>使用例子</h3><h3 id="参考文章"><a href="#参考文章" class="headerlink" title="参考文章"></a>参考文章</h3><p><a href="https://www.sebastien-han.fr/blog/2012/06/20/setup-cloud-pipe-vpn-in-openstack/" target="_blank" rel="noopener">2012年，为openstack设置cloudpipe</a><br><a href="http://www.voidcn.com/article/p-xkuamwqe-pe.html" target="_blank" rel="noopener">2012年，nova的基本功能</a></p>
-<h3 id="思考"><a href="#思考" class="headerlink" title="思考"></a>思考</h3>
+        <h3 id="简介"><a href="#简介" class="headerlink" title="简介"></a>简介</h3><p>一个availability zone是一个逻辑上的划分，划分对象是块存储，计算节点，网络。（需要V2版本才支持） </p>
+<p>availability zone list：List availability zones and their status</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">openstack availability zone list</span><br><span class="line">    [--compute]</span><br><span class="line">    [--network]</span><br><span class="line">    [--volume]</span><br><span class="line">    [--long]</span><br><span class="line"></span><br><span class="line">--compute</span><br><span class="line">List compute availability zones</span><br><span class="line"></span><br><span class="line">--network</span><br><span class="line">List network availability zones</span><br><span class="line"></span><br><span class="line">--volume</span><br><span class="line">List volume availability zones</span><br><span class="line"></span><br><span class="line">--long</span><br><span class="line">List additional fields in output</span><br></pre></td></tr></table></figure>
+<p>以及nova availability-zone-list可以看到nova相关的服务在哪个az下，当前是否可用，最后更新时间等<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line"># nova availability-zone-list</span><br><span class="line">+-----------------------+----------------------------------------+</span><br><span class="line">| Name                  | Status                                 |</span><br><span class="line">+-----------------------+----------------------------------------+</span><br><span class="line">| internal              | available                              |</span><br><span class="line">| |- poc1-01            |                                        |</span><br><span class="line">| | |- nova-conductor   | enabled :-) 2018-09-19T09:10:06.000000 |</span><br><span class="line">| | |- nova-scheduler   | enabled :-) 2018-09-19T09:10:01.000000 |</span><br><span class="line">| | |- nova-consoleauth | enabled :-) 2018-09-19T09:09:58.000000 |</span><br><span class="line">| nova                  | available                              |</span><br><span class="line">| |- poc1-01            |                                        |</span><br><span class="line">| | |- nova-compute     | enabled :-) 2018-09-19T09:10:00.000000 |</span><br><span class="line">| |- poc1-02            |                                        |</span><br><span class="line">| | |- nova-compute     | enabled :-) 2018-09-19T09:10:05.000000 |</span><br><span class="line">+-----------------------+----------------------------------------+</span><br></pre></td></tr></table></figure></p>
+
       
     </div>
     
@@ -334,8 +327,8 @@
         <div class="post-nav">
           <div class="post-nav-next post-nav-item">
             
-              <a href="/2018/09/19/nova-aggregate/" rel="next" title="nova aggregate">
-                <i class="fa fa-chevron-left"></i> nova aggregate
+              <a href="/2018/09/19/nova-pike-cli/" rel="next" title="nova pike cli">
+                <i class="fa fa-chevron-left"></i> nova pike cli
               </a>
             
           </div>
@@ -343,10 +336,6 @@
           <span class="post-nav-divider"></span>
 
           <div class="post-nav-prev post-nav-item">
-            
-              <a href="/2018/09/19/nova-dns/" rel="prev" title="nova dns">
-                nova dns <i class="fa fa-chevron-right"></i>
-              </a>
             
           </div>
         </div>
@@ -469,7 +458,7 @@
             
 
             
-              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#目录结构"><span class="nav-number">1.</span> <span class="nav-text">目录结构</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#相关命令集合"><span class="nav-number">2.</span> <span class="nav-text">相关命令集合</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#nova-cloudpipe-configure"><span class="nav-number">2.0.1.</span> <span class="nav-text">nova cloudpipe-configure</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#nova-cloudpipe-create"><span class="nav-number">2.0.2.</span> <span class="nav-text">nova cloudpipe-create</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#nova-cloudpipe-list"><span class="nav-number">2.0.3.</span> <span class="nav-text">nova cloudpipe-list</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#命令用途"><span class="nav-number">3.</span> <span class="nav-text">命令用途</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#常用命令参数"><span class="nav-number">4.</span> <span class="nav-text">常用命令参数</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#使用例子"><span class="nav-number">5.</span> <span class="nav-text">使用例子</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#参考文章"><span class="nav-number">6.</span> <span class="nav-text">参考文章</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#思考"><span class="nav-number">7.</span> <span class="nav-text">思考</span></a></li></ol></div>
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#简介"><span class="nav-number">1.</span> <span class="nav-text">简介</span></a></li></ol></div>
             
 
           </div>

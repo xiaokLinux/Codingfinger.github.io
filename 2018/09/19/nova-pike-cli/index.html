@@ -1,0 +1,1531 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="很多命令在pike版本或者pike版本之后就会废弃的命令，这里做一个统计，方便学习 持续整理，进度保存：availability-zone-list     弃用的命令 描述     absolute-limits 弃用，改为使用限制（这个原来是干嘛的？）   add-floating-ip 弃用，使用floating-ip-associate   add-fixed-ip 给虚拟机一个新的IP地">
+<meta property="og:type" content="article">
+<meta property="og:title" content="nova pike cli">
+<meta property="og:url" content="http://yoursite.com/2018/09/19/nova-pike-cli/index.html">
+<meta property="og:site_name" content="Codingfinger">
+<meta property="og:description" content="很多命令在pike版本或者pike版本之后就会废弃的命令，这里做一个统计，方便学习 持续整理，进度保存：availability-zone-list     弃用的命令 描述     absolute-limits 弃用，改为使用限制（这个原来是干嘛的？）   add-floating-ip 弃用，使用floating-ip-associate   add-fixed-ip 给虚拟机一个新的IP地">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-09-19T09:14:41.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="nova pike cli">
+<meta name="twitter:description" content="很多命令在pike版本或者pike版本之后就会废弃的命令，这里做一个统计，方便学习 持续整理，进度保存：availability-zone-list     弃用的命令 描述     absolute-limits 弃用，改为使用限制（这个原来是干嘛的？）   add-floating-ip 弃用，使用floating-ip-associate   add-fixed-ip 给虚拟机一个新的IP地">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/09/19/nova-pike-cli/"/>
+
+
+
+
+
+  <title>nova pike cli | Codingfinger</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Codingfinger</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">路漫~求索</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/09/19/nova-pike-cli/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao_k77">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Codingfinger">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">nova pike cli</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-09-19T17:01:29+08:00">
+                2018-09-19
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="很多命令在pike版本或者pike版本之后就会废弃的命令，这里做一个统计，方便学习"><a href="#很多命令在pike版本或者pike版本之后就会废弃的命令，这里做一个统计，方便学习" class="headerlink" title="很多命令在pike版本或者pike版本之后就会废弃的命令，这里做一个统计，方便学习"></a>很多命令在pike版本或者pike版本之后就会废弃的命令，这里做一个统计，方便学习</h3><blockquote>
+<p>持续整理，进度保存：availability-zone-list</p>
+</blockquote>
+<table>
+<thead>
+<tr>
+<th>弃用的命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>absolute-limits</td>
+<td>弃用，改为使用限制（这个原来是干嘛的？）</td>
+</tr>
+<tr>
+<td>add-floating-ip</td>
+<td>弃用，使用floating-ip-associate</td>
+</tr>
+<tr>
+<td>add-fixed-ip</td>
+<td>给虚拟机一个新的IP地址(pike版本之后弃用，请改用python-neutronclient或者python-openstackclient。指定小于2.44的–os-compute-api-version继续使用此命令，直到将其删除)</td>
+</tr>
+<tr>
+<td>cloudpipe-configure</td>
+<td>弃用</td>
+</tr>
+<tr>
+<td>cloudpipe-create</td>
+<td>弃用</td>
+</tr>
+<tr>
+<td>cloudpipe-list</td>
+<td>弃用</td>
+</tr>
+<tr>
+<td>dns-create</td>
+<td></td>
+</tr>
+<tr>
+<td>dns-create-private-domain</td>
+<td></td>
+</tr>
+<tr>
+<td>dns-create-public-domain</td>
+<td></td>
+</tr>
+<tr>
+<td>dns-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>dns-delete-domain</td>
+<td></td>
+</tr>
+<tr>
+<td>dns-domains</td>
+<td></td>
+</tr>
+<tr>
+<td>dns-list</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<table>
+<thead>
+<tr>
+<th>命令</th>
+<th>描述</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td>add-secgroup</td>
+<td>给虚拟机一个新的安全组</td>
+</tr>
+<tr>
+<td>agent-create</td>
+<td>$</td>
+</tr>
+<tr>
+<td>agent-delete</td>
+<td>$</td>
+</tr>
+<tr>
+<td>agent-list</td>
+<td>$</td>
+</tr>
+<tr>
+<td>agent-modify</td>
+<td>$</td>
+</tr>
+<tr>
+<td>aggregate-add-host</td>
+<td>把计算节点加到指定的主机聚合中</td>
+</tr>
+<tr>
+<td>aggregate-create</td>
+<td>创建一个主机聚合</td>
+</tr>
+<tr>
+<td>aggregate-delete</td>
+<td>删除一个主机聚合</td>
+</tr>
+<tr>
+<td>aggregate-details</td>
+<td>弃用，使用 aggregate-show查看一个主机聚合的描述</td>
+</tr>
+<tr>
+<td>aggregate-list</td>
+<td>输出主机聚合列表</td>
+</tr>
+<tr>
+<td>aggregate-remove-host</td>
+<td>将一个计算节点在指定聚合中移除</td>
+</tr>
+<tr>
+<td>aggregate-set-metadata</td>
+<td>更新主机聚合的元数据</td>
+</tr>
+<tr>
+<td>aggregate-show</td>
+<td>查看主机聚合的详情</td>
+</tr>
+<tr>
+<td>aggregate-update</td>
+<td>更新主机聚合的名称和可用域 $</td>
+</tr>
+<tr>
+<td>availability-zone-list</td>
+<td>输出所有的可用域列表</td>
+</tr>
+<tr>
+<td>backup</td>
+<td>创建虚拟机快照$</td>
+</tr>
+<tr>
+<td>boot</td>
+<td>启动一个虚拟机$</td>
+</tr>
+<tr>
+<td>clear-password</td>
+<td>清除虚拟机的admin密码</td>
+</tr>
+<tr>
+<td>console-log</td>
+<td>输出虚拟机的控制台日志</td>
+</tr>
+<tr>
+<td>credentials</td>
+<td>$</td>
+</tr>
+<tr>
+<td>delete</td>
+<td>立即关闭指定虚拟机并删除</td>
+</tr>
+<tr>
+<td>diagnostics</td>
+<td>$</td>
+</tr>
+<tr>
+<td>endpoints</td>
+<td></td>
+</tr>
+<tr>
+<td>evacuate</td>
+<td></td>
+</tr>
+<tr>
+<td>fixed-ip-get</td>
+<td></td>
+</tr>
+<tr>
+<td>fixed-ip-reserve</td>
+<td></td>
+</tr>
+<tr>
+<td>fixed-ip-unreserve</td>
+<td></td>
+</tr>
+<tr>
+<td>flavor-access-add</td>
+<td></td>
+</tr>
+<tr>
+<td>flavor-access-list</td>
+<td></td>
+</tr>
+<tr>
+<td>flavor-access-remove</td>
+<td></td>
+</tr>
+<tr>
+<td>flavor-create</td>
+<td>创建一个flavor</td>
+</tr>
+<tr>
+<td>flavor-delete</td>
+<td>删除指定的flavor</td>
+</tr>
+<tr>
+<td>flavor-key</td>
+<td></td>
+</tr>
+<tr>
+<td>flavor-list</td>
+<td>列出flavor列表</td>
+</tr>
+<tr>
+<td>flavor-show</td>
+<td>查看某个flavor的详情</td>
+</tr>
+<tr>
+<td>floating-ip-associate</td>
+<td>分配一个浮动ip给虚拟机</td>
+</tr>
+<tr>
+<td>floating-ip-bulk-create</td>
+<td></td>
+</tr>
+<tr>
+<td>floating-ip-bulk-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>floating-ip-bulk-list</td>
+<td></td>
+</tr>
+<tr>
+<td>floating-ip-create</td>
+<td>为当前租户分配一个浮动ip</td>
+</tr>
+<tr>
+<td>floating-ip-delete</td>
+<td>删除一个浮动ip</td>
+</tr>
+<tr>
+<td>floating-ip-disassociate</td>
+<td>删除虚拟机上的一个浮动ip</td>
+</tr>
+<tr>
+<td>floating-ip-list</td>
+<td>浮动IP列表</td>
+</tr>
+<tr>
+<td>floating-ip-pool-list</td>
+<td>浮动ip池列表</td>
+</tr>
+<tr>
+<td>get-mks-console</td>
+<td></td>
+</tr>
+<tr>
+<td>get-password</td>
+<td>获取虚拟机的admin密码</td>
+</tr>
+<tr>
+<td>get-rdp-console</td>
+<td></td>
+</tr>
+<tr>
+<td>get-serial-console</td>
+<td></td>
+</tr>
+<tr>
+<td>get-spice-console</td>
+<td></td>
+</tr>
+<tr>
+<td>get-vnc-console</td>
+<td></td>
+</tr>
+<tr>
+<td>host-action</td>
+<td></td>
+</tr>
+<tr>
+<td>host-describe</td>
+<td></td>
+</tr>
+<tr>
+<td>host-list</td>
+<td></td>
+</tr>
+<tr>
+<td>host-update</td>
+<td></td>
+</tr>
+<tr>
+<td>hypervisor-list</td>
+<td></td>
+</tr>
+<tr>
+<td>hypervisor-servers</td>
+<td></td>
+</tr>
+<tr>
+<td>hypervisor-show</td>
+<td></td>
+</tr>
+<tr>
+<td>hypervisor-stats</td>
+<td></td>
+</tr>
+<tr>
+<td>hypervisor-uptime</td>
+<td></td>
+</tr>
+<tr>
+<td>image-create</td>
+<td></td>
+</tr>
+<tr>
+<td>image-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>image-list</td>
+<td></td>
+</tr>
+<tr>
+<td>image-meta</td>
+<td></td>
+</tr>
+<tr>
+<td>image-show</td>
+<td></td>
+</tr>
+<tr>
+<td>interface-attach</td>
+<td></td>
+</tr>
+<tr>
+<td>interface-detach</td>
+<td></td>
+</tr>
+<tr>
+<td>interface-list</td>
+<td></td>
+</tr>
+<tr>
+<td>keypair-add</td>
+<td></td>
+</tr>
+<tr>
+<td>keypair-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>keypair-list</td>
+<td></td>
+</tr>
+<tr>
+<td>keypair-show</td>
+<td></td>
+</tr>
+<tr>
+<td>limits</td>
+<td></td>
+</tr>
+<tr>
+<td>list</td>
+<td></td>
+</tr>
+<tr>
+<td>list-secgroup</td>
+<td></td>
+</tr>
+<tr>
+<td>live-migration</td>
+<td></td>
+</tr>
+<tr>
+<td>live-migration-abort</td>
+<td></td>
+</tr>
+<tr>
+<td>live-migration-force-complete</td>
+<td></td>
+</tr>
+<tr>
+<td>lock</td>
+<td></td>
+</tr>
+<tr>
+<td>meta</td>
+<td></td>
+</tr>
+<tr>
+<td>migrate</td>
+<td></td>
+</tr>
+<tr>
+<td>network-associate-host</td>
+<td></td>
+</tr>
+<tr>
+<td>network-associate-project</td>
+<td></td>
+</tr>
+<tr>
+<td>network-create</td>
+<td></td>
+</tr>
+<tr>
+<td>network-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>network-disassociate</td>
+<td></td>
+</tr>
+<tr>
+<td>network-list</td>
+<td></td>
+</tr>
+<tr>
+<td>network-show</td>
+<td></td>
+</tr>
+<tr>
+<td>pause</td>
+<td></td>
+</tr>
+<tr>
+<td>quota-class-show</td>
+<td></td>
+</tr>
+<tr>
+<td>quota-class-update</td>
+<td></td>
+</tr>
+<tr>
+<td>quota-defaults</td>
+<td></td>
+</tr>
+<tr>
+<td>quota-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>quota-show</td>
+<td></td>
+</tr>
+<tr>
+<td>quota-update</td>
+<td></td>
+</tr>
+<tr>
+<td>rate-limits</td>
+<td></td>
+</tr>
+<tr>
+<td>reboot</td>
+<td>重启虚拟机</td>
+</tr>
+<tr>
+<td>rebuild</td>
+<td>关机使用指定的镜像重启虚拟机</td>
+</tr>
+<tr>
+<td>refresh-network</td>
+<td></td>
+</tr>
+<tr>
+<td>remove-fixed-ip</td>
+<td></td>
+</tr>
+<tr>
+<td>remove-floating-ip</td>
+<td></td>
+</tr>
+<tr>
+<td>remove-secgroup</td>
+<td></td>
+</tr>
+<tr>
+<td>rename</td>
+<td></td>
+</tr>
+<tr>
+<td>rescue</td>
+<td></td>
+</tr>
+<tr>
+<td>reset-network</td>
+<td></td>
+</tr>
+<tr>
+<td>reset-state</td>
+<td></td>
+</tr>
+<tr>
+<td>resize</td>
+<td></td>
+</tr>
+<tr>
+<td>resize-confirm</td>
+<td></td>
+</tr>
+<tr>
+<td>resize-revert</td>
+<td></td>
+</tr>
+<tr>
+<td>resume</td>
+<td></td>
+</tr>
+<tr>
+<td>root-password</td>
+<td></td>
+</tr>
+<tr>
+<td>scrub</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-add-default-rule</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-add-group-rule</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-add-rule</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-create</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-delete-default-rule</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-delete-group-rule</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-delete-rule</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-list</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-list-default-rules</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-list-rules</td>
+<td></td>
+</tr>
+<tr>
+<td>secgroup-update</td>
+<td></td>
+</tr>
+<tr>
+<td>server-group-create</td>
+<td></td>
+</tr>
+<tr>
+<td>server-group-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>server-group-get</td>
+<td></td>
+</tr>
+<tr>
+<td>server-group-list</td>
+<td></td>
+</tr>
+<tr>
+<td>server-migration-list</td>
+<td></td>
+</tr>
+<tr>
+<td>server-migration-show</td>
+<td></td>
+</tr>
+<tr>
+<td>service-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>service-disable</td>
+<td></td>
+</tr>
+<tr>
+<td>service-enable</td>
+<td></td>
+</tr>
+<tr>
+<td>service-force-down</td>
+<td></td>
+</tr>
+<tr>
+<td>service-list</td>
+<td></td>
+</tr>
+<tr>
+<td>set-password</td>
+<td></td>
+</tr>
+<tr>
+<td>shelve</td>
+<td></td>
+</tr>
+<tr>
+<td>shelve-offload</td>
+<td></td>
+</tr>
+<tr>
+<td>show</td>
+<td>显示指定虚拟机的详细信息</td>
+</tr>
+<tr>
+<td>ssh</td>
+<td></td>
+</tr>
+<tr>
+<td>start</td>
+<td></td>
+</tr>
+<tr>
+<td>stop</td>
+<td></td>
+</tr>
+<tr>
+<td>suspend</td>
+<td></td>
+</tr>
+<tr>
+<td>trigger-crash-dump</td>
+<td></td>
+</tr>
+<tr>
+<td>unlock</td>
+<td></td>
+</tr>
+<tr>
+<td>unpause</td>
+<td></td>
+</tr>
+<tr>
+<td>unrescue</td>
+<td></td>
+</tr>
+<tr>
+<td>unshelve</td>
+<td></td>
+</tr>
+<tr>
+<td>update</td>
+<td></td>
+</tr>
+<tr>
+<td>usage</td>
+<td></td>
+</tr>
+<tr>
+<td>usage-list</td>
+<td></td>
+</tr>
+<tr>
+<td>version-list</td>
+<td></td>
+</tr>
+<tr>
+<td>virtual-interface-list</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-attach</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-attachments</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-create</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-detach</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-list</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-show</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-snapshot-create</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-snapshot-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-snapshot-list</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-snapshot-show</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-type-create</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-type-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-type-list</td>
+<td></td>
+</tr>
+<tr>
+<td>volume-update</td>
+<td></td>
+</tr>
+<tr>
+<td>x509-create-cert</td>
+<td></td>
+</tr>
+<tr>
+<td>x509-get-root-cert</td>
+<td></td>
+</tr>
+<tr>
+<td>bash-completion</td>
+<td></td>
+</tr>
+<tr>
+<td>help</td>
+<td></td>
+</tr>
+<tr>
+<td>host-evacuate-live</td>
+<td></td>
+</tr>
+<tr>
+<td>cell-capacities</td>
+<td></td>
+</tr>
+<tr>
+<td>cell-show</td>
+<td></td>
+</tr>
+<tr>
+<td>migration-list</td>
+<td></td>
+</tr>
+<tr>
+<td>instance-action</td>
+<td></td>
+</tr>
+<tr>
+<td>instance-action-list</td>
+<td></td>
+</tr>
+<tr>
+<td>net</td>
+<td></td>
+</tr>
+<tr>
+<td>net-create</td>
+<td></td>
+</tr>
+<tr>
+<td>net-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>net-list</td>
+<td></td>
+</tr>
+<tr>
+<td>tenant-network-create</td>
+<td></td>
+</tr>
+<tr>
+<td>tenant-network-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>tenant-network-list</td>
+<td></td>
+</tr>
+<tr>
+<td>tenant-network-show</td>
+<td></td>
+</tr>
+<tr>
+<td>host-servers-migrate</td>
+<td></td>
+</tr>
+<tr>
+<td>host-evacuate</td>
+<td></td>
+</tr>
+<tr>
+<td>host-meta</td>
+<td></td>
+</tr>
+<tr>
+<td>list-extensions</td>
+<td></td>
+</tr>
+<tr>
+<td>force-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>restore</td>
+<td></td>
+</tr>
+<tr>
+<td>baremetal-interface-add</td>
+<td></td>
+</tr>
+<tr>
+<td>baremetal-interface-list</td>
+<td></td>
+</tr>
+<tr>
+<td>baremetal-interface-remove</td>
+<td></td>
+</tr>
+<tr>
+<td>baremetal-node-create</td>
+<td></td>
+</tr>
+<tr>
+<td>baremetal-node-delete</td>
+<td></td>
+</tr>
+<tr>
+<td>baremetal-node-list</td>
+<td></td>
+</tr>
+<tr>
+<td>baremetal-node-show</td>
+<td></td>
+</tr>
+</tbody>
+</table>
+<p>nova选项参数<br>参数名字|描述<br>—|—<br>–version|<br>–debug|<br>–os-cache|<br>–timings|<br>–os-region-name <region-name>|<br>–service-type <service-type>|<br>–service-name <service-name>|<br>–volume-service-name <volume-service-name>|<br>–os-endpoint-type <endpoint-type>|<br>–os-compute-api-version <compute-api-ver>|<br>–bypass-url <bypass-url>|<br>–os-auth-type <name>, –os-auth-plugin <name>|</name></name></bypass-url></compute-api-ver></endpoint-type></volume-service-name></service-name></service-type></region-name></p>
+<hr>
+<p>实验：</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/09/19/nova-dns/" rel="next" title="nova dns">
+                <i class="fa fa-chevron-left"></i> nova dns
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+              <a href="/2018/09/19/nova-availability-zone/" rel="prev" title="nova availability zone">
+                nova availability zone <i class="fa fa-chevron-right"></i>
+              </a>
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">xiao_k77</p>
+              <p class="site-description motion-element" itemprop="description">openstack</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">12</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#很多命令在pike版本或者pike版本之后就会废弃的命令，这里做一个统计，方便学习"><span class="nav-number">1.</span> <span class="nav-text">很多命令在pike版本或者pike版本之后就会废弃的命令，这里做一个统计，方便学习</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiao_k77</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
