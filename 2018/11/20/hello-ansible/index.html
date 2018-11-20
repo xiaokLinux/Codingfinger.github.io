@@ -1,0 +1,678 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="目的写一个ansible的自定义的module，为达到练习的目的，要求如下：  用一个action参数来控制行为 不同的action取值要有不同的参数 对于异常需要返回错误 写出详细注释  计划 action=print_hello,则直接返回hello,不需要参数（模拟不带参数）   action=send_ones_respects,带个name参数，返回为谁问安，如果name=’Brigit">
+<meta property="og:type" content="article">
+<meta property="og:title" content="hello_ansible">
+<meta property="og:url" content="http://yoursite.com/2018/11/20/hello-ansible/index.html">
+<meta property="og:site_name" content="Codingfinger">
+<meta property="og:description" content="目的写一个ansible的自定义的module，为达到练习的目的，要求如下：  用一个action参数来控制行为 不同的action取值要有不同的参数 对于异常需要返回错误 写出详细注释  计划 action=print_hello,则直接返回hello,不需要参数（模拟不带参数）   action=send_ones_respects,带个name参数，返回为谁问安，如果name=’Brigit">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:updated_time" content="2018-11-20T06:26:25.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="hello_ansible">
+<meta name="twitter:description" content="目的写一个ansible的自定义的module，为达到练习的目的，要求如下：  用一个action参数来控制行为 不同的action取值要有不同的参数 对于异常需要返回错误 写出详细注释  计划 action=print_hello,则直接返回hello,不需要参数（模拟不带参数）   action=send_ones_respects,带个name参数，返回为谁问安，如果name=’Brigit">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/11/20/hello-ansible/"/>
+
+
+
+
+
+  <title>hello_ansible | Codingfinger</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Codingfinger</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">路漫~求索</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/20/hello-ansible/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao_k77">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Codingfinger">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">hello_ansible</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-20T14:25:54+08:00">
+                2018-11-20
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h3><p>写一个ansible的自定义的module，为达到练习的目的，要求如下：</p>
+<ol>
+<li>用一个action参数来控制行为</li>
+<li>不同的action取值要有不同的参数</li>
+<li>对于异常需要返回错误</li>
+<li>写出详细注释</li>
+</ol>
+<h3 id="计划"><a href="#计划" class="headerlink" title="计划"></a>计划</h3><ul>
+<li>action=print_hello,则直接返回hello,不需要参数（模拟不带参数）  </li>
+<li>action=send_ones_respects,带个name参数，返回为谁问安，如果name=’Brigitte’,则从错误流返回，若是name=’Sombra’,则是失败执行（分别模拟带参数、错误返回、失败返回）</li>
+</ul>
+<h3 id="源码"><a href="#源码" class="headerlink" title="源码"></a>源码</h3><h4 id="自定义模块源码"><a href="#自定义模块源码" class="headerlink" title="自定义模块源码"></a>自定义模块源码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">#!/usr/bin/env python</span><br><span class="line"># -*- coding: utf-8 -*-</span><br><span class="line"># 此处一定是引入所有，也就是import* ,因为AnsibleModule需要用到其他的对象</span><br><span class="line">from ansible.module_utils.basic import *</span><br><span class="line"></span><br><span class="line">class Hello(object):</span><br><span class="line">    def __init__(self,module):</span><br><span class="line">        self.module = module</span><br><span class="line">        self.params =self.module.params</span><br><span class="line">    def print_hello(self):</span><br><span class="line">        result = dict (module=&quot;helloansible&quot;, stdout=&quot;hello,world!&quot;,</span><br><span class="line">                changed=False, rc=0)</span><br><span class="line">        self.module.exit_json(**result)</span><br><span class="line"></span><br><span class="line">    def send_ones_respects(self):</span><br><span class="line">        if self.params[&apos;name&apos;] == &quot;Brigitte&quot;:</span><br><span class="line">            result = dict(stderr=&quot;**Brigitte** error&quot;, changed=False, rc=0)</span><br><span class="line">            self.module.exit_json(**result)</span><br><span class="line">        elif self.params[&apos;name&apos;] == &quot;Sombra&quot;:</span><br><span class="line">            result = dict(msg=&quot;execute failed,unknow exception&quot;,rc=9)</span><br><span class="line">            self.module.fail_json(**result)</span><br><span class="line">        else:</span><br><span class="line">            result = dict (stdout=&quot;hello,&quot;+self.params[&apos;name&apos;],changed=False, rc=0)</span><br><span class="line">            self.module.exit_json(**result)</span><br><span class="line"></span><br><span class="line">def main():</span><br><span class="line">    argument_spec = dict(action=dict(type=&apos;str&apos;, required=True),</span><br><span class="line">            name=dict(type=&apos;str&apos;, required=False),)</span><br><span class="line">    required_if = [</span><br><span class="line">                [&apos;action&apos;, &apos;send_ones_respects&apos;,[&apos;name&apos;]],</span><br><span class="line">            ]</span><br><span class="line">    module = AnsibleModule(argument_spec=argument_spec, required_if=required_if)</span><br><span class="line">    getattr(Hello(module),module.params[&apos;action&apos;])()</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">if __name__==&apos;__main__&apos;:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure>
+<h4 id="调用playbook源码"><a href="#调用playbook源码" class="headerlink" title="调用playbook源码"></a>调用playbook源码</h4><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br></pre></td><td class="code"><pre><span class="line">#site.yml</span><br><span class="line">---</span><br><span class="line">- name: Gather facts for all hosts</span><br><span class="line">  hosts: all</span><br><span class="line">  gather_facts: false</span><br><span class="line">  tasks:</span><br><span class="line">    - setup:</span><br><span class="line">  tags: always</span><br><span class="line"></span><br><span class="line">- name: Applay role hello</span><br><span class="line">  gather_facts: false</span><br><span class="line">  hosts:</span><br><span class="line">    - all</span><br><span class="line">  roles:</span><br><span class="line">    - &#123; role: hello,</span><br><span class="line">        tags: hello &#125;</span><br><span class="line"></span><br><span class="line"># role/hello/tasks/main.yml</span><br><span class="line">---</span><br><span class="line">- name: test</span><br><span class="line">  helloansible:</span><br><span class="line">    action: &quot;print_hello&quot;</span><br><span class="line"></span><br><span class="line">- name: send scott respects</span><br><span class="line">  helloansible:</span><br><span class="line">    action: &quot;send_ones_respects&quot;</span><br><span class="line">    name: &quot;scott&quot;</span><br><span class="line"></span><br><span class="line">- name: send Brigitte respects</span><br><span class="line">  helloansible:</span><br><span class="line">    action: &quot;send_ones_respects&quot;</span><br><span class="line">    name: &quot;Brigitte&quot;</span><br><span class="line"></span><br><span class="line">- name: send Sombra respects</span><br><span class="line">  helloansible:</span><br><span class="line">    action: &quot;send_ones_respects&quot;</span><br><span class="line">    name: &quot;Sombra&quot;</span><br></pre></td></tr></table></figure>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br></pre></td><td class="code"><pre><span class="line">#第一部分执行结果：</span><br><span class="line">ok: [localhost] =&gt; &#123;</span><br><span class="line">    &quot;changed&quot;: false,</span><br><span class="line">    &quot;failed&quot;: false,</span><br><span class="line">    &quot;invocation&quot;: &#123;</span><br><span class="line">        &quot;module_args&quot;: &#123;</span><br><span class="line">            &quot;action&quot;: &quot;print_hello&quot;,</span><br><span class="line">            &quot;name&quot;: null</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;module&quot;: &quot;helloansible&quot;,</span><br><span class="line">    &quot;rc&quot;: 0,</span><br><span class="line">    &quot;stdout&quot;: &quot;hello,world!&quot;,</span><br><span class="line">    &quot;stdout_lines&quot;: [</span><br><span class="line">        &quot;hello,world!&quot;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">#第二部分执行结果</span><br><span class="line">ok: [localhost] =&gt; &#123;</span><br><span class="line">    &quot;changed&quot;: false,</span><br><span class="line">    &quot;failed&quot;: false,</span><br><span class="line">    &quot;invocation&quot;: &#123;</span><br><span class="line">        &quot;module_args&quot;: &#123;</span><br><span class="line">            &quot;action&quot;: &quot;send_ones_respects&quot;,</span><br><span class="line">            &quot;name&quot;: &quot;scott&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;rc&quot;: 0,</span><br><span class="line">    &quot;stdout&quot;: &quot;hello,scott&quot;,</span><br><span class="line">    &quot;stdout_lines&quot;: [</span><br><span class="line">        &quot;hello,scott&quot;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">ok: [localhost] =&gt; &#123;</span><br><span class="line">    &quot;changed&quot;: false,</span><br><span class="line">    &quot;failed&quot;: false,</span><br><span class="line">    &quot;invocation&quot;: &#123;</span><br><span class="line">        &quot;module_args&quot;: &#123;</span><br><span class="line">            &quot;action&quot;: &quot;send_ones_respects&quot;,</span><br><span class="line">            &quot;name&quot;: &quot;Brigitte&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;rc&quot;: 0,</span><br><span class="line">    &quot;stderr&quot;: &quot;**Brigitte** error&quot;,</span><br><span class="line">    &quot;stderr_lines&quot;: [</span><br><span class="line">        &quot;**Brigitte** error&quot;</span><br><span class="line">    ]</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">fatal: [localhost]: FAILED! =&gt; &#123;</span><br><span class="line">    &quot;changed&quot;: false,</span><br><span class="line">    &quot;failed&quot;: true,</span><br><span class="line">    &quot;invocation&quot;: &#123;</span><br><span class="line">        &quot;module_args&quot;: &#123;</span><br><span class="line">            &quot;action&quot;: &quot;send_ones_respects&quot;,</span><br><span class="line">            &quot;name&quot;: &quot;Sombra&quot;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;,</span><br><span class="line">    &quot;msg&quot;: &quot;execute failed,unknow exception&quot;,</span><br><span class="line">    &quot;rc&quot;: 9</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h3 id="总结"><a href="#总结" class="headerlink" title="总结"></a>总结</h3><ul>
+<li>编写自定模块是，参数module.params是一个字典。  </li>
+<li>module.exit_json(**kw)字典中的貌似只能在调试下才能看到内容</li>
+<li>rc不等于0，会和module.fail_json(**kw)一样，哪怕是调用exit_json作为返回</li>
+<li>写playbook，自定义模块需要和name对齐，模块参数需要和相对模块空两格</li>
+<li>注意单词拼写，比如roles: -{ role: xxx}后者是不带s的</li>
+</ul>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/14/readme/" rel="next" title="">
+                <i class="fa fa-chevron-left"></i> 
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">xiao_k77</p>
+              <p class="site-description motion-element" itemprop="description">openstack</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">16</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#目的"><span class="nav-number">1.</span> <span class="nav-text">目的</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#计划"><span class="nav-number">2.</span> <span class="nav-text">计划</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#源码"><span class="nav-number">3.</span> <span class="nav-text">源码</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#自定义模块源码"><span class="nav-number">3.1.</span> <span class="nav-text">自定义模块源码</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#调用playbook源码"><span class="nav-number">3.2.</span> <span class="nav-text">调用playbook源码</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#总结"><span class="nav-number">4.</span> <span class="nav-text">总结</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiao_k77</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>

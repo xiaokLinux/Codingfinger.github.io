@@ -232,6 +232,160 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/06/nova-object/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao_k77">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Codingfinger">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2018/07/06/nova-object/" itemprop="url">nova的面相对象模型是如何抽象的</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-07-06T12:58:43+08:00">
+                2018-07-06
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <blockquote>
+<p>蓝图      :<br><a href="https://wiki.openstack.org/wiki/ObjectProposal#Example" target="_blank" rel="noopener">nova object化，挖坟wiki</a><br>蓝图发布时间        : 2013-2014</p>
+</blockquote>
+<h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>nova中有一个模块是object，里面定义了一个base模块，base模块中NovaObjectRegistry，NovaObject，ObjectListBase，NovaObjectSerializer几个类。</p>
+<p>这个nova.object就是nova的object化，这是Dan Smith推动下在2013年完成的。object化主要是为了实现四个功能：</p>
+<ol>
+<li>解耦合.</li>
+<li>申明Object 属性的类型. </li>
+<li>减少写入DB的数据量. </li>
+<li>实现dB API</li>
+</ol>
+<p>nova的架构为了安全性隔离，nova-compute不直接操作数据库而是通过消息队列远程调用nova-conductor去完成数据库操作。在远程过程调用过程中nova-compute会把obj-method传给conductor。根据nova架构nova-compute和nova-conductor是可以分开部署，而且可以是不同版本的。object化之后，nova-conductor根据消息队列中的对象名称，实例化一个即可，这个对象无论nova-compute和nova-conductor版本是否一致都是继承于同一个基类，这样就实现了版本兼容。具体细节，以一次调用为例</p>
+<ol start="0">
+<li>nova-compute想远程调用a.xx方法</li>
+<li>nova-compute通过to_primitive把a serialize 化,转成一个叫primitive的dict</li>
+<li>Conduct从消息队列获取到字符串，转成dict比对版本号，决定实例化那些属性</li>
+<li>Conduct通过from_primitive 把a 实例化</li>
+<li>Conductor的Object和db的model是一致的(identical), 这样就实现了Compute node 上的Object和db的松耦合. 可实例化的Object类型是通过metaclass 来控制的.</li>
+</ol>
+<p>为例减少数据库数据关于类型的bug, Object的Fields就需要明确声明自己的类型.</p>
+<p>Object有一个_change_field 属性, 用来记录变化的量, 从而减少写入dB(save())和回写到compute node的数据量(get_instance_by_uuid).</p>
+<p>将各自的数据库调用封装在内部，以前所有的代码调用库方法都是先去db.api写需要的xxx方法，然后在代码中调用。随着功能越复杂db.api将越来越复杂而且难以管理。object化之后将各自操的数据库操作封装在各自的内部</p>
+<h3 id="蓝图内容"><a href="#蓝图内容" class="headerlink" title="蓝图内容"></a>蓝图内容</h3><h4 id="目的"><a href="#目的" class="headerlink" title="目的"></a>目的</h4><p>无论是直接操作数据模型还是通过rpc都采用一个方式操作数据库。把数据和数据操作绑定在一起，特别是序列化和实际的数据库实现。代码隔离具体的数据库实现，以便实现滚动升级。摒弃直接调用db.api的方式，在具体的操作数据库类中执行属性检查，以便save()实现可以解耦</p>
+<h4 id="理由"><a href="#理由" class="headerlink" title="理由"></a>理由</h4><p>原来的在nova中，在通过rpc调用之前所有的内容都会被转化为“原语”，传递原语意味着我们使用非OO接口来对这些项进行更改。</p>
+<p>原函数：数据库API中提取的SQLAllchemy对象的直接表示。这种转换是不好的，因为当数据库模型变了，则原函数也需要改变</p>
+<h4 id="实现接口"><a href="#实现接口" class="headerlink" title="实现接口"></a>实现接口</h4><h5 id="Object-Class-Registry"><a href="#Object-Class-Registry" class="headerlink" title="Object Class Registry"></a>Object Class Registry</h5><p>这个接口是为了防止客户端随机实例化远程端点的任何对象，将维护一个注册表来保留我们需要实例化的对象。每个对象都将包含一个主要/次要的版本号。注册表通过元编程来实现<br>注意：这不是实例注册表，它仅用于托管可以实例化的类。它不会尝试跟踪其他服务正在运行或者正在使用的服务</p>
+<h5 id="Strictish-Object-Properties"><a href="#Strictish-Object-Properties" class="headerlink" title="Strictish Object Properties"></a>Strictish Object Properties</h5><p>定义一些属性的数据类型，在nova中存在很多数据类型的bug，比如很多数据类型在传递时是字符串在MySQL中却是int型。这种不统一的数据类型导致了同样的代码切换后端数据库就不可用了。这里的目标就是定义哪些对象应该严格定义，以减少数据类型引起的bug</p>
+<h5 id="Inbuilt-Serialization"><a href="#Inbuilt-Serialization" class="headerlink" title="Inbuilt Serialization"></a>Inbuilt Serialization</h5><p>现在的jsonutils.to_primitive()能够序列化任何对象，这是不好的。现在让每个对象自己带有to_primitive()和from_primitive()方法,这种方式使得序(反)列化的时候具有上下文敏感性。为了让这种方式生效并且对使用者透明，oslo_rpcproxy和rpcdispatcher类将会调用例程的to_primitive和from_primitive方法。<br>我们可以使用isinstance(foo, ThisMagicObject)来判定是否是预期实例来避免中断</p>
+<h5 id="Object-Implementation"><a href="#Object-Implementation" class="headerlink" title="Object Implementation"></a>Object Implementation</h5><p>nova因为需要隔离数据库驱动程序，所以有一个子类化的对象提供默认的实现来替代实例本身操作数据库(SQLAlchemy) &lt;这里到底是说ORM的model还是说在ORM上封装数据操作层，猜测是后者等待阅读源码验证一下&gt;<br>每个object类都提供了查询创建接口实现。对属性的更改会自动跟踪，使用save操作可以轻松地执行选定属性更新(类似于今天使用的instance_update()方式)</p>
+<h5 id="Magic-Remoting-Behavior"><a href="#Magic-Remoting-Behavior" class="headerlink" title="Magic Remoting Behavior"></a>Magic Remoting Behavior</h5><p>对象的每个方法(无论是类方法还是普通方法)都可以加上一个辅助(helper)修饰器,这个修饰器会提供自动的远程调用。这个修饰器是否生效取决于组件是否应该直接访问数据库，比如nova-api本来就可以直接操作数据库，所以修饰器会调用实际的对象实现来操作数据库。再比如nova-compute这个本身是不能访问数据库的，那么修饰器会拦截访问并尝试调用修饰器的方法来把数据层操作通过rpc导向nova-conductor</p>
+<h5 id="Example"><a href="#Example" class="headerlink" title="Example"></a>Example</h5><p>构建一个虚拟的对象定义和实现</p>
+<figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">MyObject</span><span class="params">(base.BaseObject)</span>:</span></span><br><span class="line">    fields = &#123;</span><br><span class="line">        <span class="string">'id'</span>: int,</span><br><span class="line">        <span class="string">'foo'</span>: str,</span><br><span class="line">    &#125;</span><br><span class="line">    version = <span class="string">'1.0'</span></span><br><span class="line"></span><br><span class="line">    <span class="comment"># NOTE(danms) magic_static_method returns a classmethod</span></span><br><span class="line"><span class="meta">    @base.magic_static_method</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">get_by_id</span><span class="params">(cls, context, obj_id)</span>:</span></span><br><span class="line">        db_obj = db.fake_method_that_returns_a_thing(context, obj_id)</span><br><span class="line">        myobj = cls()</span><br><span class="line">        myobj.id = db_obj.id</span><br><span class="line">        myobj.foo = db_obj.foo</span><br><span class="line">        <span class="keyword">return</span> myobj</span><br><span class="line"></span><br><span class="line"><span class="meta">    @base.magic_method</span></span><br><span class="line">    <span class="function"><span class="keyword">def</span> <span class="title">save</span><span class="params">(self, context)</span>:</span></span><br><span class="line">        <span class="keyword">if</span> <span class="string">'foo'</span> <span class="keyword">in</span> self.what_changed():</span><br><span class="line">            db.fake_method_that_updates(context, self.id, foo=self.foo)</span><br><span class="line"></span><br><span class="line"><span class="comment">#--------------------------------#</span></span><br><span class="line"><span class="comment">#在nova-api或nova-compute这样使用</span></span><br><span class="line"><span class="comment">#--------------------------------#</span></span><br><span class="line">obj = myobject.MyObject.get_by_id(context, obj_id)</span><br><span class="line">obj.foo = <span class="string">'new value for foo'</span></span><br><span class="line">obj.save()</span><br></pre></td></tr></table></figure>
+<h3 id="变更"><a href="#变更" class="headerlink" title="变更"></a>变更</h3><p>nova/object/base.py ： object类基础实现，提供注册表和rpc helper<br>nova/object/migration.py ：一个简单的对象实现<br>nova/tests/test_object.py  ：两个迁移测试，分别对应拦截和不拦截情况下的行为</p>
+<p>在这个蓝图完成后<br>oslo加上了 :<br>rpc类中的序列化钩子被清理掉<br>base objec类和工具函数集成到oslo<br>nova内部的迭代将使用objects类对象</p>
+<h3 id="整理"><a href="#整理" class="headerlink" title="整理"></a>整理</h3><p>这次变更可以看到<br>nova.objects.base模块提供了以下的基础object类<br><img src="http://on-img.com/chart_image/5b3edf62e4b0a6efd473fa99.png" alt="nova-object-base"></p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/07/05/concurrency/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -986,7 +1140,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">15</span>
+                  <span class="site-state-item-count">16</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
