@@ -1,0 +1,768 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next muse use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Hexo, NexT" />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="概述ansible特点：  在所有主机之间并行执行 执行下一个task之前会等待上一个task在所有主机中执行完毕 ansible会按照确定的顺序执行 幂等性：保证结果如你所期望（已经是了，就不做任何事） 简单抽象，也就是没有一个统一的接口抽象。比如在centos下装包用yum，ubuntu下面用apt。需要在编写playbook时为不同OS执行不同操作 复用（模块复用、role层面的playbo">
+<meta property="og:type" content="article">
+<meta property="og:title" content="奔跑吧ansible（上）">
+<meta property="og:url" content="http://yoursite.com/2018/11/21/bengpao-ansible1/index.html">
+<meta property="og:site_name" content="Codingfinger">
+<meta property="og:description" content="概述ansible特点：  在所有主机之间并行执行 执行下一个task之前会等待上一个task在所有主机中执行完毕 ansible会按照确定的顺序执行 幂等性：保证结果如你所期望（已经是了，就不做任何事） 简单抽象，也就是没有一个统一的接口抽象。比如在centos下装包用yum，ubuntu下面用apt。需要在编写playbook时为不同OS执行不同操作 复用（模块复用、role层面的playbo">
+<meta property="og:locale" content="zh-Hans">
+<meta property="og:image" content="http://assets.processon.com/chart_image/5bf3db3fe4b0342397f7ceb8.png">
+<meta property="og:updated_time" content="2018-11-21T08:30:22.000Z">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:title" content="奔跑吧ansible（上）">
+<meta name="twitter:description" content="概述ansible特点：  在所有主机之间并行执行 执行下一个task之前会等待上一个task在所有主机中执行完毕 ansible会按照确定的顺序执行 幂等性：保证结果如你所期望（已经是了，就不做任何事） 简单抽象，也就是没有一个统一的接口抽象。比如在centos下装包用yum，ubuntu下面用apt。需要在编写playbook时为不同OS执行不同操作 复用（模块复用、role层面的playbo">
+<meta name="twitter:image" content="http://assets.processon.com/chart_image/5bf3db3fe4b0342397f7ceb8.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Muse',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2018/11/21/bengpao-ansible1/"/>
+
+
+
+
+
+  <title>奔跑吧ansible（上） | Codingfinger</title>
+  
+
+
+
+
+
+
+
+
+</head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Codingfinger</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">路漫~求索</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2018/11/21/bengpao-ansible1/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="xiao_k77">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Codingfinger">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">奔跑吧ansible（上）</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2018-11-21T16:26:48+08:00">
+                2018-11-21
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+
+          
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id="概述"><a href="#概述" class="headerlink" title="概述"></a>概述</h3><p>ansible特点：</p>
+<ul>
+<li>在所有主机之间并行执行</li>
+<li>执行下一个task之前会等待上一个task在所有主机中执行完毕</li>
+<li>ansible会按照确定的顺序执行</li>
+<li>幂等性：保证结果如你所期望（已经是了，就不做任何事）</li>
+<li>简单抽象，也就是没有一个统一的接口抽象。比如在centos下装包用yum，ubuntu下面用apt。需要在编写playbook时为不同OS执行不同操作</li>
+<li>复用（模块复用、role层面的playbook复用）Ansible Galaxy在线role仓库</li>
+</ul>
+<h4 id="一些例子"><a href="#一些例子" class="headerlink" title="一些例子"></a>一些例子</h4><p>编写hosts<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">#传入参数，明确地告诉ansible如何连接受控主机</span><br><span class="line">testserver ansible_ssh_host=127.0.0.1 ansible_ssh_port=22 ansible_ssh_user=root ansible_ssh_private_key_file=/root/.ssh/xxx</span><br></pre></td></tr></table></figure></p>
+<p>测试连接<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">ansible testserver -i hosts -m ping</span><br></pre></td></tr></table></figure></p>
+<p>为了不提示记录受控节点的ssh key(提示的时候输入yes也是可以的)，可以在控制节点修改ssh配置文件来禁用公钥检查：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">Host *</span><br><span class="line">StrictHostKeyChecking no</span><br></pre></td></tr></table></figure></p>
+<h4 id="ansible-cfg用于简化配置"><a href="#ansible-cfg用于简化配置" class="headerlink" title="ansible.cfg用于简化配置"></a>ansible.cfg用于简化配置</h4><p>ansible.cfg可以设定一些默认值，来避免重复输入同样的类容</p>
+<p>ansible差早配置文件的搜索路径：</p>
+<ol>
+<li>ANSIBLE_CONFIG环境变量所指定的文件</li>
+<li>./ansible.cfg(当前目录下)</li>
+<li>~/ansible.cfg(用户目录下)</li>
+<li>/etc/ansible/ansible.cfg</li>
+</ol>
+<p>习惯做法是ansible.cfg与playbooks一起放在当前目录，方便一个推送git仓库</p>
+<p>ansible.cfg文件的作用：</p>
+<ul>
+<li>指定inventory文件的位置</li>
+<li>SSH使用的用户名</li>
+<li>SSH私钥</li>
+</ul>
+<p>ansible.cfg示例<br><figure class="highlight ini"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line"><span class="section">[defaults]</span></span><br><span class="line"><span class="attr">hostfile</span> = hosts</span><br><span class="line"><span class="attr">remote_user</span> = root</span><br><span class="line"><span class="attr">private_key_file</span> = .../private_key</span><br><span class="line"><span class="attr">host_key_checking</span> = <span class="literal">False</span></span><br></pre></td></tr></table></figure></p>
+<p>有了ansible.cfg，hosts文件就可以进行简化<br><figure class="highlight shell"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">testserver ansible_ssh_host=127.0.0.1 ansible_ssh_port=22</span><br></pre></td></tr></table></figure></p>
+<p>关闭cowsay<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">[defaults]</span><br><span class="line">nocows = 1</span><br></pre></td></tr></table></figure></p>
+<h4 id="ansible命令的一些参数"><a href="#ansible命令的一些参数" class="headerlink" title="ansible命令的一些参数"></a>ansible命令的一些参数</h4><p>-m:指定模块<br>-a:指定参数<br>-s:指定用root权限执行  </p>
+<p><strong>ansible运行时会写入/var/log/syslog</strong></p>
+<h3 id="playbook"><a href="#playbook" class="headerlink" title="playbook"></a>playbook</h3><h4 id="一些约定"><a href="#一些约定" class="headerlink" title="一些约定"></a>一些约定</h4><p>关于模块参数的真值和假值：真，yes\on\1\true;假，no\off\false.</p>
+<p>将文件放在files的子目录中，将Jinja2模板文件放在templates的子目录中</p>
+<p>编写完playbook，在首行添加“#!/usr/bin/env ansible-playbook”,则可以直接执行./playbookname.yml</p>
+<h4 id="Gathering-Facts"><a href="#Gathering-Facts" class="headerlink" title="Gathering Facts"></a>Gathering Facts</h4><p>当ansible连接到受控节点，做的第一件事就是收集各种信息，比如：OS、hostname、nic信息等。这样在后续task中可以直接使用这些信息。比如在某个task中向配置文件模板填充ip。不需要使用这些信息，可以关闭fact gethering来节省时间</p>
+<h4 id="语法"><a href="#语法" class="headerlink" title="语法"></a>语法</h4><p>一个合法的json文件也一定是一个合法的yaml文件</p>
+<h5 id="文件起始"><a href="#文件起始" class="headerlink" title="文件起始"></a>文件起始</h5><p>“—”表示文档开头，漏写也不影响playbook的运行</p>
+<h5 id="字符串"><a href="#字符串" class="headerlink" title="字符串"></a>字符串</h5><p>YAML中的字符串不需要引号扩包裹，哪怕字符串中间有空格。特殊情况需要“”包裹，这种情况下一般就是引入变量进行替代</p>
+<h5 id="列表"><a href="#列表" class="headerlink" title="列表"></a>列表</h5><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">- A A</span><br><span class="line">- A B C</span><br><span class="line">- A B A</span><br><span class="line"></span><br><span class="line"># 等价YAML内联格式</span><br><span class="line">[A A, A B C, A B A]</span><br><span class="line"></span><br><span class="line"># 等价于json</span><br><span class="line">[</span><br><span class="line">    <span class="string">"A A"</span>,</span><br><span class="line">    <span class="string">"A B C"</span>,</span><br><span class="line">    <span class="string">"A B A"</span></span><br><span class="line">]</span><br></pre></td></tr></table></figure>
+<h5 id="字典"><a href="#字典" class="headerlink" title="字典"></a>字典</h5><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line">address: ShangHai</span><br><span class="line">name: scott</span><br><span class="line">age: 19</span><br><span class="line"></span><br><span class="line">#等价YAML内联格式</span><br><span class="line">&#123;address: ShangHai, name: scott, age: 19&#125;</span><br><span class="line"></span><br><span class="line">#等价json</span><br><span class="line">&#123;</span><br><span class="line">    <span class="attr">"address"</span>:<span class="string">"ShangHai"</span>,</span><br><span class="line">    <span class="attr">"name"</span>:<span class="string">"scott"</span>,</span><br><span class="line">    <span class="attr">"age"</span>:<span class="string">"19"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h5 id="折行"><a href="#折行" class="headerlink" title="折行"></a>折行</h5><p>“&gt;”来进行美观排版，YAML解释器会替换为空格</p>
+<h5 id="paly"><a href="#paly" class="headerlink" title="paly"></a>paly</h5><p>playbook的本质就是一个字典组成的列表。确切地说，一个playbook就是一组play组成的列表</p>
+<p>每个play必须包含的：</p>
+<ul>
+<li>host:需要配置的一组主机</li>
+<li>task:需要在这些主机上执行的任务</li>
+</ul>
+<p>非必须<br>vars:变量与其值组成的列表</p>
+<h5 id="task"><a href="#task" class="headerlink" title="task"></a>task</h5><p>一个play可以有多个task，task有可选的name，可以使用–start-at-task <task name="">来从中间的task开始执行playbook。这里需要用name来引用task</task></p>
+<p>每个task必须包含由模块名字组成的key，以及由传到模块的参数组成的value。如果直接在模块后面接参数，比如“apt: name=nginx update_cache=yes”,其参数只有一个，就是一个“name=nginx update_cache=yes”的字符串。指定多个参数，徐要用到字典。</p>
+<p>ansible旧版语法，把模块名字作为“action”的参数：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- name: install nginx</span><br><span class="line">  action: apt name=nginx update_cache=yes</span><br></pre></td></tr></table></figure></p>
+<h5 id="模块"><a href="#模块" class="headerlink" title="模块"></a>模块</h5><p>ansible执行一系列操作的脚本，可以是python写的也可以是其他语言编写。</p>
+<p><strong>使用ansible模块文档:“ansible-doc 模块名称”</strong></p>
+<h5 id="小结"><a href="#小结" class="headerlink" title="小结"></a>小结</h5><p>一个playbook包含多个play。一个paly由host的无序集合与task的有序列表组成。每一个task仅由一个模块组成</p>
+<p><img src="http://assets.processon.com/chart_image/5bf3db3fe4b0342397f7ceb8.png" alt="img"></p>
+<p>执行ansible后发送变化了么？主机状态跟踪</p>
+<p>对应模块返回字段changed,True则表示被改变了，执行playbook会打印黄色的提示。task执行时检查节点状态是否改变，如果已经和模块参数匹配就直接返回ok。这个changed标志可以配合handler来触发额外的动作。</p>
+<h5 id="关于变量"><a href="#关于变量" class="headerlink" title="关于变量"></a>关于变量</h5><p>什么时候必须使用引号，<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">- name: perform some task</span><br><span class="line">  command: &#123;&#123; myapp &#125;&#125; -a foo</span><br></pre></td></tr></table></figure></p>
+<p>对于这种形式，YAML解释器会认为是一个内联字典,比返回一个错误。这种情况下就需要把参数””起来，（” -a foo”）。类似的原因，参数中有”,”也需要引号包裹。</p>
+<p>特别地：debug模块的msg参数需要引号来捕捉空格。所以需要用到单引号与双引号。</p>
+<p>对于旧版本：$var来引用变量值</p>
+<h5 id="handler"><a href="#handler" class="headerlink" title="handler"></a>handler</h5><p>ansible识别到task改变了系统状态就会触发通知机制，task将handler的名字作为参数传递，以此来通知handler</p>
+<p><strong>关于handler：ansible只会在所有任务执行完后执行handler，而且即使notified多次也只会执行一次。handler按照play中定义的顺序执行，而不是notified的顺序。</strong></p>
+<p>陷阱：</p>
+<ol>
+<li>运行ansible</li>
+<li>一个task改变了状态并引发notify</li>
+<li>后面的task执行错误，ansible退出</li>
+<li>修复了playbook</li>
+<li>再次运行playbook</li>
+<li>重新开始执行并没有task状态汇报，所以ansible并不会执行handler</li>
+</ol>
+<h3 id="inventory-描述服务器"><a href="#inventory-描述服务器" class="headerlink" title="inventory:描述服务器"></a>inventory:描述服务器</h3><p>ansible会自动将localhost添加到inventory中，所在在需要的时候会直接在本地执行，而不是通过ssh回环。也可以显示地添加localhost到inventory中<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">localhost ansible_connection=local</span><br></pre></td></tr></table></figure></p>
+<p>inventory行为参数<br>名称|默认值|描述<br>—|—|—<br>ansible_ssh_host|主机的名字|ssh目的主机或IP<br>ansible_ssh_port|22|SSH目的端口<br>ansible_ssh_user|root|SSH登陆使用的用户名<br>ansible_ssh_pass|none|SSH登陆密码<br>ansible_connection|smart|ansible使用何种连接模式<br>ansible_ssh_private_key_file|none|ssh认证使用的私钥<br>ansible_shell_type|sh|命令使用的shell<br>ansible_python_interpreter|/usr/bin/python|主机上使用的python解释器<br>ansible_*_interpreter|none|类似python解释器配置的其他语言版本</p>
+<p>其中：<br>ansible_connection:ansible支持多种transport（连接到主机的机制），默认为smart，智能传输模式(优先使用ControlPersist的特性，如果本地支持这个特性就使用本地ssh客户端，否则使用一个名为paramiko的python ssh客户端库)。如果使用paramiko这个库是不支持ssh配置里面的别名的(这个很好理解，毕竟没有使用本地ssh客户端，配置文件自然不起作用)</p>
+<p>ansible_python_interpreter:指定受控节点python解释器的路径</p>
+<p>ansible_*_interpreter:如果使用不是由python编写的自定义模块，你可以使用这个参数来制定解释器的路径(/usr/bin/ruby)。</p>
+<h4 id="改变参数默认值"><a href="#改变参数默认值" class="headerlink" title="改变参数默认值"></a>改变参数默认值</h4><p>ansible.cfg的[defaults]部分更改一些行为参数的默认值</p>
+<h4 id="群组"><a href="#群组" class="headerlink" title="群组"></a>群组</h4><h5 id="语法，单组"><a href="#语法，单组" class="headerlink" title="语法，单组"></a>语法，单组</h5><p>all=’*’</p>
+<p>写inventory文件的时候，可以列出Vagrant主机，然后再将他们加入群组<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br></pre></td><td class="code"><pre><span class="line">ahost.example.com</span><br><span class="line">bhost.example.com</span><br><span class="line">control01 ansible_ssh_host=127.0.0.1 ansible_ssh_port=22</span><br><span class="line">control02 ansible_ssh_host=192.168.0.2 ansible_ssh_port=6066</span><br><span class="line">control03 ansible_ssh_host=192.168.0.3 ansible_ssh_port=5079</span><br><span class="line"></span><br><span class="line">[control]</span><br><span class="line">control01</span><br><span class="line">control02</span><br><span class="line">control03</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">#ansible的组语法支持&lt;hostname&gt;:&lt;port&gt;语法来指代主机所以可以用以下来指定一个组</span><br><span class="line">[control]</span><br><span class="line">127.0.0.1:22</span><br><span class="line">192.168.0.2:6066</span><br><span class="line">192.168.0.3:5079</span><br></pre></td></tr></table></figure></p>
+<h5 id="语法，组嵌套"><a href="#语法，组嵌套" class="headerlink" title="语法，组嵌套"></a>语法，组嵌套</h5><p>比如web服务器组和队列服务器都需要安装django依赖包，则可以定义一个嵌套组<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line">[django:children]</span><br><span class="line">web</span><br><span class="line">task</span><br></pre></td></tr></table></figure></p>
+<p>:children是为了告诉ansible，应该讲下面的值解释为组而不是主机</p>
+<h5 id="群组变量"><a href="#群组变量" class="headerlink" title="群组变量"></a>群组变量</h5><p>在inventory中，还可以针对主机设置变量。这些变量可以与其他变量一样在playbook中使用。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">new.example.com note=test</span><br></pre></td></tr></table></figure></p>
+<p>配置信息针对环境的变化而变化，所以我们可以针对不同的环境定义不同的群组变量，例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line">[all:vars]</span><br><span class="line">ntp_server=ntp.ubuntu.com</span><br><span class="line"></span><br><span class="line">[production:vars]</span><br><span class="line">db_primary_host=rhodeisland.example.com</span><br><span class="line">db_primary_port=5556</span><br><span class="line">db_replica_host=virginia.example.com</span><br><span class="line">db_user=testuser</span><br><span class="line">db_name=productdb</span><br><span class="line">db_password=SNjkgdyGgdgyg7yt7t6!@@as</span><br><span class="line">rabbitmq_host=rabbit.example.com</span><br><span class="line">rabbit_port=5672</span><br><span class="line"></span><br><span class="line">[..:vars]</span><br><span class="line">...</span><br><span class="line"></span><br><span class="line">[..:vars]</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<p>其中all这个群组是用来指定不随主机而变化的变量</p>
+<p>在inventory的组变量中，ansible只支持两种类型：string &amp;&amp; Boolean</p>
+<h5 id="host-vars与group-vars"><a href="#host-vars与group-vars" class="headerlink" title="host_vars与group_vars"></a>host_vars与group_vars</h5><p>ansible支持相对于inventory组变脸更合适的方法，可以为每个主机和群组创建独立的变量文件。ansible会使用yaml格式去解析这些变量。</p>
+<p>ansible会在名为<strong>host_vars</strong>的目录中寻找主机变量文件，在名为<strong>group_vars</strong>的目录中寻找组变量文件</p>
+<p>主机变量路径：host_vars/主机名<br>群组变量路径：group_vars/群组名</p>
+<p>当然，还可以进一步拆分，ansible还允许将group_vars/groupname定义为一个目录。然后将多个包含变量定义的YAML文件存放在这个目录中。例如：<br><figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">#group_vars/production/db</span><br><span class="line">db:</span><br><span class="line">    user: testuser</span><br><span class="line">    password: dashajh^&amp;&amp;G77t7g7</span><br><span class="line">    port: 1439</span><br><span class="line">    primary:</span><br><span class="line">        host: [IP1]</span><br><span class="line">    replica:</span><br><span class="line">        host: [IP2]</span><br><span class="line"></span><br><span class="line">#group_vars/production/rabbitmq</span><br><span class="line">...</span><br></pre></td></tr></table></figure></p>
+<h4 id="动态inventory"><a href="#动态inventory" class="headerlink" title="动态inventory"></a>动态inventory</h4><p>当inventory被标记为可执行，ansible会假定这是动态inventory文件，并且会执行它，而不是读取它的内容。</p>
+<h5 id="动态inventory脚本接口"><a href="#动态inventory脚本接口" class="headerlink" title="动态inventory脚本接口"></a>动态inventory脚本接口</h5><p>动态inventory脚本必须支持如下两个命令行参数：</p>
+<ul>
+<li>–host=<hostname> 原来列出主机的详细信息</hostname></li>
+<li>–list用来列出群组</li>
+</ul>
+<p>–host=<hostname> api 响应json：<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"ansible_ssh_host"</span>:<span class="string">"IP"</span>, </span><br><span class="line">    <span class="attr">"ansible_ssh_port"</span>: <span class="number">22</span>,</span><br><span class="line">    <span class="attr">"ansible_ssh_user"</span>:<span class="string">"ansible"</span></span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></hostname></p>
+<p>–list api 响应json:<br><figure class="highlight json"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">&#123;</span><br><span class="line">    <span class="attr">"production"</span>:[<span class="string">"hosta"</span>,<span class="string">"hostb"</span>,...],</span><br><span class="line">    <span class="attr">"groupa"</span>:[<span class="string">"hostx"</span>,<span class="string">"hosty"</span>],</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>作为优化，list可以直接返回主机变量，避免再次–host调用。<br><figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">"_meta":&#123;</span><br><span class="line">    "hostvars":</span><br><span class="line">    "hosta":&#123;</span><br><span class="line">        "vara":"valuea",</span><br><span class="line">        "varb":"valueb"</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure></p>
+<p>一个动态inventory的例子<br><figure class="highlight python"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> subprocess</span><br><span class="line"><span class="keyword">import</span> paramiko</span><br><span class="line"><span class="keyword">import</span> json</span><br><span class="line"><span class="keyword">import</span> argparse</span><br><span class="line"><span class="keyword">import</span> sys</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">parse_args</span><span class="params">()</span>:</span></span><br><span class="line">    parse = parse.ArgumentParser(description=<span class="string">"asdada"</span>)</span><br><span class="line">    group = parse.add_mutually_exclusive_group(required=<span class="keyword">True</span>)</span><br><span class="line">    group.add_argument(<span class="string">'--list'</span>,action=<span class="string">'testaction'</span>)</span><br><span class="line">    group.add_argument(<span class="string">'--host'</span>)</span><br><span class="line">    <span class="keyword">return</span> parse.parse_args()</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">list_hosts</span><span class="params">()</span>:</span></span><br><span class="line">    hosts = fill_hosts()<span class="comment">#填充信息</span></span><br><span class="line">    <span class="keyword">return</span> hosts</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">get_host_detail</span><span class="params">(host)</span>:</span></span><br><span class="line">    <span class="keyword">return</span> &#123;<span class="string">'ansible_ssh_host'</span>:host.ip, </span><br><span class="line">            <span class="string">'ansible_ssh_port'</span>:host.port,</span><br><span class="line">            ...</span><br><span class="line">    &#125;</span><br><span class="line"></span><br><span class="line"><span class="function"><span class="keyword">def</span> <span class="title">main</span><span class="params">()</span>:</span></span><br><span class="line">    args = parse_args()</span><br><span class="line">    <span class="keyword">if</span> args.list:</span><br><span class="line">        hosts = list_hosts()</span><br><span class="line">        json.dump(&#123;<span class="string">'vgrant'</span>:hosts&#125;,sys.stdout)</span><br><span class="line">    <span class="keyword">else</span>:</span><br><span class="line">        details = get_host_detail(args.host)</span><br><span class="line">        json.dump(details,sys.stdout)</span><br><span class="line"></span><br><span class="line"><span class="keyword">if</span> __name__==<span class="string">'__main__'</span>:</span><br><span class="line">    main()</span><br></pre></td></tr></table></figure></p>
+<h5 id="多个inventory文件"><a href="#多个inventory文件" class="headerlink" title="多个inventory文件"></a>多个inventory文件</h5><p>建一个目录，把多个inventory文件放在一个目录中。-i指定这个目录，则ansible会自动组合这些inventory文件。当然，也可以在ansible.cfg中指定[default].hostfile=inventory</p>
+<p><strong>ansible执行时可以向inventory中添加主机和群组</strong><br>add_host模块，弥补动态inventory在开始执行playbook之后其内容并不会再改变了，相当云编译完成，而add_host是在运行时添加。这个比较好理解</p>
+<blockquote>
+<p>add_host name=hostname group=web,staging myvar=myval</p>
+</blockquote>
+<p>add_host只会在本次执行playbook生效，不会修改inventory文件</p>
+<p>group_by:运行时创建新的群组，它可以让你可以基于已经为每台主机设定的变量来创建群组，”fact”。如果启用Ansible的fact gathering</p>
+<h3 id="资料"><a href="#资料" class="headerlink" title="资料"></a>资料</h3><p><a href="http://jinja2.pocoo.org/docs/dev/templates/" target="_blank" rel="noopener">Jinja2模板设计者文档</a><br><a href="https://github.com/ansible/ansible" target="_blank" rel="noopener">ansible动态inventory模板(plugins/inventory目录)</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2018/11/20/hello-ansible/" rel="next" title="hello_ansible">
+                <i class="fa fa-chevron-left"></i> hello_ansible
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">xiao_k77</p>
+              <p class="site-description motion-element" itemprop="description">openstack</p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">17</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                
+                  <span class="site-state-item-count">10</span>
+                  <span class="site-state-item-name">标签</span>
+                
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#概述"><span class="nav-number">1.</span> <span class="nav-text">概述</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一些例子"><span class="nav-number">1.1.</span> <span class="nav-text">一些例子</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ansible-cfg用于简化配置"><span class="nav-number">1.2.</span> <span class="nav-text">ansible.cfg用于简化配置</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#ansible命令的一些参数"><span class="nav-number">1.3.</span> <span class="nav-text">ansible命令的一些参数</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#playbook"><span class="nav-number">2.</span> <span class="nav-text">playbook</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#一些约定"><span class="nav-number">2.1.</span> <span class="nav-text">一些约定</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Gathering-Facts"><span class="nav-number">2.2.</span> <span class="nav-text">Gathering Facts</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#语法"><span class="nav-number">2.3.</span> <span class="nav-text">语法</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#文件起始"><span class="nav-number">2.3.1.</span> <span class="nav-text">文件起始</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#字符串"><span class="nav-number">2.3.2.</span> <span class="nav-text">字符串</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#列表"><span class="nav-number">2.3.3.</span> <span class="nav-text">列表</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#字典"><span class="nav-number">2.3.4.</span> <span class="nav-text">字典</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#折行"><span class="nav-number">2.3.5.</span> <span class="nav-text">折行</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#paly"><span class="nav-number">2.3.6.</span> <span class="nav-text">paly</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#task"><span class="nav-number">2.3.7.</span> <span class="nav-text">task</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#模块"><span class="nav-number">2.3.8.</span> <span class="nav-text">模块</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#小结"><span class="nav-number">2.3.9.</span> <span class="nav-text">小结</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#关于变量"><span class="nav-number">2.3.10.</span> <span class="nav-text">关于变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#handler"><span class="nav-number">2.3.11.</span> <span class="nav-text">handler</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#inventory-描述服务器"><span class="nav-number">3.</span> <span class="nav-text">inventory:描述服务器</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#改变参数默认值"><span class="nav-number">3.1.</span> <span class="nav-text">改变参数默认值</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#群组"><span class="nav-number">3.2.</span> <span class="nav-text">群组</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#语法，单组"><span class="nav-number">3.2.1.</span> <span class="nav-text">语法，单组</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#语法，组嵌套"><span class="nav-number">3.2.2.</span> <span class="nav-text">语法，组嵌套</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#群组变量"><span class="nav-number">3.2.3.</span> <span class="nav-text">群组变量</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#host-vars与group-vars"><span class="nav-number">3.2.4.</span> <span class="nav-text">host_vars与group_vars</span></a></li></ol></li><li class="nav-item nav-level-4"><a class="nav-link" href="#动态inventory"><span class="nav-number">3.3.</span> <span class="nav-text">动态inventory</span></a><ol class="nav-child"><li class="nav-item nav-level-5"><a class="nav-link" href="#动态inventory脚本接口"><span class="nav-number">3.3.1.</span> <span class="nav-text">动态inventory脚本接口</span></a></li><li class="nav-item nav-level-5"><a class="nav-link" href="#多个inventory文件"><span class="nav-number">3.3.2.</span> <span class="nav-text">多个inventory文件</span></a></li></ol></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#资料"><span class="nav-number">4.</span> <span class="nav-text">资料</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2018</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">xiao_k77</span>
+
+  
+</div>
+
+
+
+
+
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
